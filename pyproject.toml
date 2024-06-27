@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "json-to-graph"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "json2graph", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pymongo = "^4.5.0"
+python-dotenv = "^1.0.0"
+pytest = "^7.4.2"
+mypy = "^1.5.1"
+neo4j = "^5.12.0"
+graphviz = "^0.20.2"
+backoff = "^2.2.1"
+turbo-c2 = "^0.0.1a1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

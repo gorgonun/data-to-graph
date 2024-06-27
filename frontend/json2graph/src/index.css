@@ -1,0 +1,18 @@
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+@font-face {
+  font-family: 'Oxigen Mono';
+  src: local('Oxigen Mono'), url('./fonts/Oxigen_mono/OxygenMono-Regular.ttf');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
