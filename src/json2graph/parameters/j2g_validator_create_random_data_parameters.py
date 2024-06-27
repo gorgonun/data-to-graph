@@ -1,0 +1,14 @@
+from pydantic import BaseModel
+
+from json2graph.validator.base_with_hash import BaseWithHash
+
+
+class J2GValidatorCreateRandomDataParameters(BaseModel):
+    data_destination_queue: str
+    neo4j_url: str
+    neo4j_user: str
+    neo4j_password: str
+    generate_models_size: int | None = None
+    deep_nested_model_kwargs: list[dict[str, int | None]] = []
+    default_deep_nested_model_kwargs: dict[str, int | None] = {"max_table_count": 4, "max_depth": 2, "min_relations": 1}
+    models: list[BaseWithHash] = []
