@@ -2057,13 +2057,13 @@ files = [
 
 [[package]]
 name = "turbo-c2"
-version = "0.0.1a1"
+version = "0.0.1a2"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.10"
 files = [
-    {file = "turbo_c2-0.0.1a1-py3-none-any.whl", hash = "sha256:ddf583bbf68d7d2d9f832ae8e508ef351412acd4f34dd58c1d207cc5ece74672"},
-    {file = "turbo_c2-0.0.1a1.tar.gz", hash = "sha256:dadcbbdaf303b2a705c6726a4c9c14da433bfc9f103267384cfcc423c2cd53f6"},
+    {file = "turbo_c2-0.0.1a2-py3-none-any.whl", hash = "sha256:450aa34f1c9df376a7caf5afcdad5b68fa8d8ed958e4daae06d85ede6e951457"},
+    {file = "turbo_c2-0.0.1a2.tar.gz", hash = "sha256:88c61382cf57e2f6b539744e3266a5f94bed6fe81d93c769218f45dc0118c911"},
 ]
 
 [package.dependencies]
