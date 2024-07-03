@@ -83,7 +83,6 @@ def get_deployment(app: FastAPI, central_api: CentralApi):
 
             for job_api in job_apis:
                 state = await job_api.get_state()
-                replicas = await job_api.get_replicas()
                 if state == "paused":
                     await job_api.resume()
                 elif await job_api.get_replicas() == 0:

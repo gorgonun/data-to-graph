@@ -2,9 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
-  Icon,
   IconButton,
-  Link,
   Stack,
   Typography,
 } from "@mui/material";
@@ -52,6 +50,9 @@ export default function Migrations() {
   const [migrationStatus, setMigrationStatus] = useState<{
     [migrationName: string]: MigrationStatusResponse;
   } | null>(null);
+  const [migrationReplicas, setMigrationReplicas] = useState<{
+    [migrationName: string]: number;
+  } | null>(null);
 
   useEffect(() => {
     const getAllMigrationStatus = () => {
@@ -65,9 +66,11 @@ export default function Migrations() {
       });
     };
 
+    getAllMigrationStatus();
+
     const interval = setInterval(getAllMigrationStatus, statusRefetchTimeMills);
     return () => clearInterval(interval);
-  }, [statusRefetchTimeMills]);
+  }, [statusRefetchTimeMills, migrations]);
 
   useEffect(() => {
     if (!dataFetched || refetchData) {
@@ -80,6 +83,21 @@ export default function Migrations() {
     }
   }, [dataFetched, refetchData]);
 
+  useEffect(() => {
+    if (migrationStatus) {
+      const replicas = migrations.reduce((acc, migration) => {
+        acc[migration.migration_name] = Object.values(
+          migrationStatus[migration.migration_name]
+        )
+          .map((status) => status.replicas)
+          .reduce((a, b) => a + b, 0);
+        return acc;
+      }, {} as { [migrationName: string]: number });
+
+      setMigrationReplicas(replicas);
+    }
+  }, [migrationStatus]);
+
   const startMigration = async (migrationName: string) => {
     setStartingMigration(migrationName);
 
@@ -89,25 +107,13 @@ export default function Migrations() {
     setStartingMigration(null);
   };
 
-  const getMigrationReplicas = (migration: MigrationWithExtraFields) => {
-    if (migrationStatus && migrationStatus[migration.migration_name]) {
-      return migrationStatus[migration.migration_name][migration.migration_name]
-        .replicas;
-    }
-    return migration.replicas;
-  };
-
   const someStepIsNotRunning = (migration: MigrationWithExtraFields) => {
-    if (migrationStatus && migrationStatus[migration.migration_name]) {
-      console.log(migrationStatus[migration.migration_name])
-      return (
-        migration.mongodb_producer_replicas === 0 ||
-        migration.json_to_node_replicas === 0 ||
-        migration.node_to_neo4j_replicas === 0 ||
-        migration.neo4j_create_relationship_replicas === 0
-      );
-    }
-    return false;
+    return (
+      migration.mongodb_producer_replicas === 0 ||
+      migration.json_to_node_replicas === 0 ||
+      migration.node_to_neo4j_replicas === 0 ||
+      migration.neo4j_create_relationship_replicas === 0
+    );
   };
 
   return (
@@ -139,82 +145,90 @@ export default function Migrations() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {migrations.map((migration) => (
-                <TableRow
-                  key={migration.migration_name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    <Button
-                      color="inherit"
-                      sx={{ padding: 0 }}
-                      onClick={() => {
-                        setSelectMigrationData(migration);
-                        setOpenMigrationModal(true);
-                      }}
-                    >
-                      {migration.migration_name}
-                    </Button>
-                  </TableCell>
-                  <TableCell align="right">
-                    {migration.migration_type}
-                  </TableCell>
-                  <TableCell align="right">
-                    {getMigrationReplicas(migration)}
-                  </TableCell>
-                  <TableCell align="right">
-                    <Stack
-                      direction="row"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      flexGrow={1}
-                    >
-                      {startingMigration === migration.migration_name && (
-                        <Stack p={1}>
-                          <CircularProgress
-                            size="24px"
-                            sx={{ color: "green" }}
-                          />
-                        </Stack>
-                      )}
-                      {!(startingMigration === migration.migration_name) && (
+              {migrations.map((migration) => {
+                const replicas = migrationReplicas?.[migration.migration_name] ?? migration.replicas;
+
+                return (
+                  <TableRow
+                    key={migration.migration_name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <Button
+                        color="inherit"
+                        sx={{ padding: 0 }}
+                        onClick={() => {
+                          setSelectMigrationData(migration);
+                          setOpenMigrationModal(true);
+                        }}
+                      >
+                        {migration.migration_name}
+                      </Button>
+                    </TableCell>
+                    <TableCell align="right">
+                      {migration.migration_type}
+                    </TableCell>
+                    <TableCell align="right">
+                      {migrationReplicas?.[migration.migration_name] ??
+                        migration.replicas}
+                    </TableCell>
+                    <TableCell align="right">
+                      <Stack
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        flexGrow={1}
+                      >
+                        {startingMigration === migration.migration_name && (
+                          <Stack p={1}>
+                            <CircularProgress
+                              size="24px"
+                              sx={{ color: "green" }}
+                            />
+                          </Stack>
+                        )}
+                        {!(startingMigration === migration.migration_name) && (
+                          <IconButton
+                            disabled={
+                              replicas > 0 &&
+                              !someStepIsNotRunning(migration)
+                            }
+                            onClick={() =>
+                              startMigration(migration.migration_name)
+                            }
+                          >
+                            <PlayArrowSharpIcon
+                              sx={{
+                                color:
+                                  replicas === 0
+                                    ? "lightGray"
+                                    : "green",
+                                "&:hover": {
+                                  color: "green",
+                                },
+                              }}
+                            />
+                          </IconButton>
+                        )}
                         <IconButton
-                          disabled={getMigrationReplicas(migration) > 0 && !someStepIsNotRunning(migration)}
-                          onClick={() =>
-                            startMigration(migration.migration_name)
-                          }
+                          sx={{ color: "gray" }}
+                          disabled={replicas === 0}
+                          onClick={() => pause(migration.migration_name)}
                         >
-                          <PlayArrowSharpIcon
-                            sx={{
-                              color:
-                                getMigrationReplicas(migration) === 0
-                                  ? "lightGray"
-                                  : "green",
-                              "&:hover": {
-                                color: "green",
-                              },
-                            }}
-                          />
+                          <PauseIcon />
                         </IconButton>
-                      )}
-                      <IconButton
-                        sx={{ color: "gray" }}
-                        disabled={getMigrationReplicas(migration) === 0}
-                        onClick={() => pause(migration.migration_name)}
-                      >
-                        <PauseIcon />
-                      </IconButton>
-                      <IconButton
-                        sx={{ color: "red" }}
-                        disabled={getMigrationReplicas(migration) === 0}
-                        onClick={() => stop(migration.migration_name)}
-                      >
-                        <StopIcon />
-                      </IconButton>
-                    </Stack>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        <IconButton
+                          sx={{ color: "red" }}
+                          disabled={replicas === 0}
+                          onClick={() => stop(migration.migration_name)}
+                        >
+                          <StopIcon />
+                        </IconButton>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
