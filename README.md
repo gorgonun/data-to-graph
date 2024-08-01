@@ -1,5 +1,5 @@
-# Json2Graph
-Trabalho de conclusão do curso de Sistemas de Informação
+# Data2Graph
+Continuação do Trabalho de conclusão do curso de Sistemas de Informação Json2Graph
 
 ## Makefile
 

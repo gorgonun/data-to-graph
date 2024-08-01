@@ -17,6 +17,10 @@ graphviz = "^0.20.2"
 backoff = "^2.2.1"
 turbo-c2 = "^0.0.1a1"
 
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
 
 [build-system]
 requires = ["poetry-core"]
