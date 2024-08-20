@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 8.4666666 8.4666666"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
+   sodipodi:docname="d2g-icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="5.8154882"
+     inkscape:cx="22.698008"
+     inkscape:cy="19.516848"
+     inkscape:window-width="2560"
+     inkscape:window-height="1043"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="font-size:7.9375px;line-height:0.95;font-family:'Oxygen Mono';-inkscape-font-specification:'Oxygen Mono';stroke-width:0.309941;fill-opacity:1"
+       d="m 1.4161737,5.6929898 q 0,-0.531197 -0.3677517,-0.8217661 Q 0.68521058,4.5761144 0.10407198,4.5397932 V 3.9268737 Q 0.68975057,3.8905526 1.0529622,3.5999833 1.4161737,3.309414 1.4161737,2.778217 V 1.7203635 q 0,-0.8944086 0.3677519,-1.29848139 0.3722918,-0.40861303 1.2485396,-0.40861303 h 0.01362 l 1.035153,0.00454 V 0.63526926 H 3.0460854 q -0.2996496,0 -0.4630947,0.19522612 Q 2.4240856,1.0257216 2.4240856,1.7203638 v 1.0941747 q 0,0.7400436 -0.4358538,1.066934 -0.2360876,0.1816058 -0.6810216,0.3541312 0.7173428,0.2814889 0.917109,0.599299 0.1997664,0.3132699 0.1997664,0.817226 v 1.0941748 q 0,0.6855618 0.1543649,0.8898683 0.1543649,0.1997663 0.4676349,0.1997663 h 1.0351529 v 0.6129195 l -1.0351529,0.00454 h -0.01362 q -0.8762478,0 -1.2485396,-0.408613 Q 1.4161737,7.6407117 1.4161737,6.7463033 Z M 6.9914711,0.01780919 q 1.3711236,1.89324041 1.3711236,4.24049511 0,2.3427144 -1.3847441,4.1905532 H 6.1787853 Q 6.8007851,7.4591059 7.1367558,6.4421137 7.4772666,5.4251213 7.4772666,4.2129028 q 0,-2.1611088 -1.289401,-4.19509361 z"
+       id="text1"
+       aria-label="{)" />
+  </g>
+</svg>
