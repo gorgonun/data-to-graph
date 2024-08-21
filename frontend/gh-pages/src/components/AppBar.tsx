@@ -6,16 +6,12 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import {
-  Divider,
   Drawer,
   Grid,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Stack,
 } from "@mui/material";
@@ -52,10 +48,10 @@ export function D2GAppBar() {
               <Stack
                 direction="row"
                 height="100%"
-                justifyContent="flex-start"
+                justifyContent={{ xs: "center", md: "flex-start" }}
                 alignItems="center"
               >
-                <IconD2G sx={{ mr: 1 }} />
+                <IconD2G sx={{ mr: { xs: 0, md: 1 } }} />
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
                   {pages.map(({ name, onClick }) => (
                     <Button
@@ -64,7 +60,7 @@ export function D2GAppBar() {
                         setDrawerOpen(false);
                         onClick();
                       }}
-                      sx={{ color: "white", display: "block" }}
+                      sx={{ color: "white" }}
                     >
                       {name}
                     </Button>
@@ -117,26 +113,10 @@ export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
       onClick={() => toggleDrawer(false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+        {pages.map(({ name, onClick }, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton onClick={onClick}>
+              <ListItemText primary={name} />
             </ListItemButton>
           </ListItem>
         ))}
