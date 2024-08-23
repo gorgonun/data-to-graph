@@ -32,7 +32,8 @@
   "include": [
     "./dist/types/**/*.ts",
     "./next-env.d.ts",
-    "./src"
+    "./src",
+    "src/custom.d.ts"
   ],
   "exclude": [
     "./node_modules"
