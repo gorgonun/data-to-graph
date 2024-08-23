@@ -1,9 +1,10 @@
 import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { StaticImageData } from "next/image";
 
 export interface ResourceBlockProps {
   title: string;
   message: string;
-  image: string;
+  image: StaticImageData;
   alt: string;
   direction: "left" | "right";
   size: "small" | "medium" | "large" | "xlarge";
@@ -49,7 +50,7 @@ export function ResourceBlock({
     <Box
       component="img"
       alt={alt}
-      src={image}
+      src={image.src}
       sx={{
         maxWidth: sizeMapping[size],
         borderRadius: { xs: 1, md: "10px" },
@@ -67,8 +68,8 @@ export function ResourceBlock({
     </Stack>
   ) : (
     <Stack direction="column" alignItems="center">
+      <Stack mb={5}>{TextResource}</Stack>
       <Box mb={5}>{ImageResource}</Box>
-      <Stack>{TextResource}</Stack>
     </Stack>
   );
 }

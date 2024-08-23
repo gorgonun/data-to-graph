@@ -1,3 +1,4 @@
+"use client" 
 import {
   alpha,
   Box,
@@ -204,14 +205,15 @@ export function MainPage() {
         </Stack>
       </Stack>
       <Stack
-        sx={{ backgroundColor: alpha(theme.palette["secondary"].main, 0.2) }}
+        sx={{ backgroundColor: theme.palette["primary"].main }}
       >
         <Stack width="100%" maxWidth="lg" mx="auto">
           <Stack
             direction={{ xs: "column", md: "row" }}
             justifyContent={{ xs: "auto", md: "space-evenly" }}
             alignItems={{ xs: "center", md: "auto" }}
-            p={{ xs: 2, md: 10 }}
+            px={{ xs: 2, md: 10 }}
+            py={{ xs: 6, md: 10 }}
           >
             <Stack direction="row" alignItems="center">
               <Stack
@@ -220,12 +222,12 @@ export function MainPage() {
                 justifyContent="center"
                 flexWrap="wrap"
               >
-                <IconD2G color="primary" sx={{ mr: 1, fontSize: "3rem" }} />
+                <IconD2G sx={{ mr: 1, fontSize: "3rem", color: theme.palette["primary"].contrastText }} />
                 <Typography
                   variant="h3"
                   fontFamily="oxygenMono"
                   fontWeight={700}
-                  color="primary"
+                  sx={{ color: theme.palette["primary"].contrastText }}
                 >
                   Data 2 Graph
                 </Typography>
@@ -238,7 +240,7 @@ export function MainPage() {
                   onClick={() => {
                     onClick();
                   }}
-                  sx={{ color: "primary" }}
+                  sx={{ color: theme.palette["primary"].contrastText }}
                 >
                   {name}
                 </Button>

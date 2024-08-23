@@ -1,9 +1,9 @@
+"use client" 
 import {
   Stack,
 } from "@mui/material";
 import { D2GAppBar } from "./components/AppBar";
 import { MainPage } from "./components/MainPage";
-
 
 
 function App() {
