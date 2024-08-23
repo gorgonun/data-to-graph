@@ -33,7 +33,8 @@
     "./dist/types/**/*.ts",
     "./next-env.d.ts",
     "./src",
-    "src/custom.d.ts"
+    "src/custom.d.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "./node_modules"

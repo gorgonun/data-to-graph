@@ -6,7 +6,7 @@ import theme from "../theme";
 export const metadata: Metadata = {
   title: "Data 2 Graph",
   icons: {
-    icon: "/icon.svg",
+    icon: "images/icon.svg",
   }
 };
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="icon" type="image/svg+xml" href="images/icon.svg" />
       </head>
       <body>
         <AppRouterCacheProvider>
