@@ -1,0 +1,64 @@
+{
+  "appbar": {
+    "languageLabel": "Language"
+  },
+  "pages": {
+    "home": {
+      "title": "Leverage the full potential of your data",
+      "subtitle": "Don't become a hostage to the format",
+      "messageBlock": {
+        "automaticMigration": {
+          "title": "Automatic migration",
+          "content": "With just the access credentials, Data2Graph migrates data from various sources to Neo4j."
+        },
+        "streaming": {
+          "title": "Streaming",
+          "content": "Data2Graph performs data processing in real time and you can control its execution."
+        },
+        "metricsVisualization": {
+          "title": "Metrics visualization",
+          "content": "Track the migration performance through dashboards."
+        },
+        "scale": {
+          "title": "Scale as needed",
+          "content": "Data2Graph is scalable and can be used in different migration scenarios, both using resources from your local machine and in a cluster."
+        }
+      },
+      "resourceBlock": {
+          "automaticMigration": {
+              "title": "Completely automatic migration",
+              "content": "Use JSON data with any level of complexity and the migration will occur automatically."
+          },
+          "jsonToGraph": {
+              "title": "From JSON objects to graphs",
+              "content": "Objects are transformed into vertices and edges, maintaining the structure and relationships between them."
+          },
+          "aggregatedMetrics": {
+              "title": "With aggregated metrics",
+              "content": "Visualize aggregated performance metrics of the migration and track progress."
+          },
+          "realTimeMetrics": {
+              "title": "And real-time metrics",
+              "content": "Track the migration progress in real time and make data-driven decisions."
+          },
+          "streamingTurboC2": {
+              "title": "With streaming from Turbo C2",
+              "content": "Visualize and manage your migration using Turbo C2 and keep your data up to date."
+          },
+          "databaseConnection": {
+              "title": "Requiring only the database connection",
+              "content": "Connect to the database of your choice and migrate data simply."
+          }
+      }
+    },
+    "documentation": {
+      "title": "Documentation"
+    },
+    "examples": {
+      "title": "Examples"
+    },
+    "about": {
+      "title": "About"
+    }
+  }
+}

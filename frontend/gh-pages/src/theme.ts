@@ -1,5 +1,8 @@
 'use client';
 import { createTheme } from "@mui/material/styles";
+import { Oxygen_Mono } from 'next/font/google';
+
+const oxygenMono = Oxygen_Mono({ subsets: ['latin'], weight: '400' });
 
 const theme = createTheme({
   palette: {
@@ -20,6 +23,17 @@ const theme = createTheme({
       secondary: "#ffffff",
     },
   },
+  typography: {
+    h1: {
+      fontFamily: oxygenMono.style.fontFamily,
+    },
+    h2: {
+      fontFamily: oxygenMono.style.fontFamily,
+    },
+    h3: {
+      fontFamily: oxygenMono.style.fontFamily,
+    },
+  }
 });
 
 export default theme;

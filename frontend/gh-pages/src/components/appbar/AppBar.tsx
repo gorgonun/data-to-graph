@@ -1,4 +1,3 @@
-"use client" 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,19 +7,24 @@ import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  Drawer,
   Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Stack,
 } from "@mui/material";
 import { IconD2G } from "./icons/d2g-icon";
-import { pages } from "./pages";
+import { pages } from "../pages";
+import { i18nConfig } from "../../../i18n";
+
+import * as React from "react";
+import { useLanguage } from "@/Providers/LanguageContext";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { D2GDrawer } from "./Drawer";
+import { useI18n } from "@/hooks/useI18n";
 
 export function D2GAppBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const currentLocale = useLanguage();
+  const { t } = useI18n({ namespace: "main" });
+  const { t: tCommon } = useI18n({ namespace: "common" });
 
   return (
     <AppBar position="static">
@@ -54,16 +58,24 @@ export function D2GAppBar() {
               >
                 <IconD2G sx={{ mr: { xs: 0, md: 1 } }} />
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                  {pages.map(({ name, onClick }) => (
+                  {/* {i18nConfig.locales.map((locale) => (
+                    <LanguageSwitcher key={locale} locale={locale} />
+                  ))} */}
+                  <LanguageSwitcher
+                    locales={i18nConfig.locales}
+                    currentLocale={currentLocale}
+                  />
+                  {pages.map(({ label, href }) => (
                     <Button
-                      key={name}
+                      key={label}
+                      LinkComponent={"a"}
+                      href={href}
                       onClick={() => {
                         setDrawerOpen(false);
-                        onClick();
                       }}
                       sx={{ color: "white" }}
                     >
-                      {name}
+                      {t(`pages.${label}.title`)}
                     </Button>
                   ))}
                 </Box>
@@ -84,7 +96,7 @@ export function D2GAppBar() {
                     width: "fit-content",
                   }}
                 >
-                  Baixe agora
+                  {tCommon('actionButton')}
                 </Button>
               </Stack>
             </Grid>
@@ -93,43 +105,5 @@ export function D2GAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
-  );
-}
-
-interface D2GDrawerProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  // onClose: () => void;
-}
-
-export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
-  const toggleDrawer = (newOpen: boolean) => {
-    setOpen(newOpen);
-  };
-
-  const DrawerList = (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={() => toggleDrawer(false)}
-    >
-      <List>
-        {pages.map(({ name, onClick }, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton onClick={onClick}>
-              <ListItemText primary={name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  return (
-    <div>
-      <Drawer open={open} onClose={() => toggleDrawer(false)}>
-        {DrawerList}
-      </Drawer>
-    </div>
   );
 }

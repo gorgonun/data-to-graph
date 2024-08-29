@@ -34,7 +34,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: CI=false NEXT_PUBLIC_BASE_PATH="/data-to-graph" npm run build
+        run: CI=false NEXT_PUBLIC_BASE_PATH="/data-to-graph" NEXT_PUBLIC_DIST_DIR='dist/' npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
