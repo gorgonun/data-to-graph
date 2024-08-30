@@ -1,0 +1,64 @@
+{
+  "appbar": {
+    "languageLabel": "Idioma"
+  },
+  "pages": {
+    "home": {
+      "title": "Aproveite todo o potencial dos seus dados",
+      "subtitle": "Não se torne refém do formato",
+      "messageBlock": {
+        "automaticMigration": {
+          "title": "Migração automática",
+          "content": "Com apenas as credenciais de acesso, o Data2Graph migra dados de várias fontes para o Neo4j."
+        },
+        "streaming": {
+          "title": "Streaming",
+          "content": "O Data2Graph realiza o processamento de dados em tempo real e você pode controlar a sua execução."
+        },
+        "metricsVisualization": {
+          "title": "Visualização de métricas",
+          "content": "Acompanhe o desempenho da migração por meio de dashboards."
+        },
+        "scale": {
+          "title": "Escale conforme a necessidade",
+          "content": "O Data2Graph é escalável e pode ser utilizado em diferentes cenários de migração, tanto utilizando recursos de sua máquina local como em um cluster."
+        }
+      },
+      "resourceBlock": {
+          "automaticMigration": {
+              "title": "Migração completamente automática",
+              "content": "Utilize dados JSON com qualquer nível de complexidade e a migração irá ocorrer de forma automática."
+          },
+          "jsonToGraph": {
+              "title": "De objetos JSON para grafos",
+              "content": "Objetos são transformados em vértices e arestas, mantendo a estrutura e as relações entre eles."
+          },
+          "aggregatedMetrics": {
+              "title": "Com métricas agregadas",
+              "content": "Visualize métricas agregadas de desempenho da migração e acompanhe o progresso."
+          },
+          "realTimeMetrics": {
+              "title": "E métricas em tempo real",
+              "content": "Acompanhe o progresso da migração em tempo real e tome decisões baseadas em dados."
+          },
+          "streamingTurboC2": {
+              "title": "Com streaming a partir do Turbo C2",
+              "content": "Visualize e gerencie sua migração utilizando o Turbo C2 e mantenha seus dados atualizados."
+          },
+          "databaseConnection": {
+              "title": "Necessitando apenas da conexão com banco de dados",
+              "content": "Conecte-se com o banco de dados de sua escolha e faça a migração de dados de forma simples."
+          }
+      }
+    },
+    "documentation": {
+      "title": "Documentação"
+    },
+    "examples": {
+      "title": "Exemplos"
+    },
+    "about": {
+      "title": "Sobre"
+    }
+  }
+}

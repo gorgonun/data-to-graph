@@ -1,6 +1,5 @@
-"use client" 
 export const pages = [
-    { name: "Documentação", onClick: () => null },
-    { name: "Exemplos", onClick: () => null },
-    { name: "Sobre", onClick: () => null },
+    { label: "documentation", href: '/documentation' },
+    { label: "examples", href: '/examples' },
+    { label: "about", href: '/about' },
   ];
