@@ -9,43 +9,44 @@ profile ?= basic
 clean ?= false
 
 # mongodb
-mongodb_root_username ?= root
-mongodb_root_password ?= root
+
+# FIXME: Cannot use user and pass with replica set (https://stackoverflow.com/questions/73222424/mongodb-badvalue-security-keyfile-is-required-when-authorization-is-enabled-wi)
+# mongodb_root_username ?= root
+# mongodb_root_password ?= root
+
 mongodb_database ?= test
 mongodb_collection ?= nyt
-mongodb_url ?= "mongodb://mongodb@mongodb:27017/?replicaSet=rs0"
+mongodb_url ?= "mongodb://mongodb:27017/"
+mongodb_data_folder ?= ./data/mongodb/
 
 # neo4j
 neo4j_user ?= neo4j
 neo4j_password ?= admin
+neo4j_port ?= 7687
+neo4j_data_folder ?= ./data/neo4j/
+neo4j_host ?= 'neo4j'
 
 # local
-host ?= 'http://localhost'
+prometheus_host ?= 'http://prometheus'
 
 define GLOBAL_ENV
-MONGODB_DATA=./data/mongodb/
-NEO4J_DATA=./data/neo4j/
-MONGODB_URL="mongodb://mongodb@mongodb:27017/?replicaSet=rs0"
+MONGODB_DATA=$(mongodb_data_folder)
+NEO4J_DATA=$(neo4j_data_folder)
+MONGODB_URL=$(mongodb_url)
 MONGODB_COLLECTION=$(mongodb_collection)
 MONGODB_DATABASE=$(mongodb_database)
-NEO4J_URL="bolt://$(host):7687"
+NEO4J_URL="bolt://$(neo4j_host):$(neo4j_port)"
 NEO4J_USER=$(neo4j_user)
 NEO4J_PASSWORD=$(neo4j_password)
-MONGODB_PORTAL_DA_TRANSPARENCIA_SERVIDORES_COLLECTION=portal_da_transparencia_servidores
-PROMETHEUS_HOST='http://$(host)'
-CUSTOM_HOST='http://$(host)'
+PROMETHEUS_HOST=$(prometheus_host)
 endef
 
 define MONGODB_DEFAULT_ENV
-MONGO_INITDB_ROOT_USERNAME=$(mongodb_root_username)
-MONGO_INITDB_ROOT_PASSWORD=$(mongodb_root_password)
 MONGO_INITDB_DATABASE=$(mongodb_database)
 endef
 
 define MONGO_EXPRESS_ENV
 ME_CONFIG_MONGODB_URL=$(mongodb_url)
-ME_CONFIG_MONGODB_ADMINUSERNAME=root
-ME_CONFIG_MONGODB_ADMINPASSWORD=root
 endef
 
 define NEO4J_DEFAULT_ENV
@@ -83,6 +84,9 @@ start_infra_force: setup_env_file
 
 stop_infra: setup_env_file
 	docker-compose --profile $(profile) down
+
+stop_infra_remove_orphans: setup_env_file
+	docker-compose --profile $(profile) down --remove-orphans
 
 run: setup_env_file
 	cd src/ && poetry run python -m python.main

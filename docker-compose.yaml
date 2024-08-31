@@ -1,17 +1,70 @@
-version: '3.8'
-
 networks:
-  neo4j-network:
+  neo4j_network:
+    name: neo4j_network
+    driver: bridge
+
+  metrics_network:
+    name: metrics_network
     driver: bridge
 
 services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - /tmp/ray_tmp:/tmp/ray_tmp
+      - ./prometheus/:/etc/prometheus/
+    ports:
+      - 9090:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - metrics_network
+    profiles: ['basic', 'full']
+    depends_on:
+      - data2graph_backend
+
+  data2graph_frontend:
+    container_name: data2graph_frontend
+    image: ghcr.io/gorgonun/data_to_graph_frontend:latest
+    build:
+      context: ./frontend/data2graph/
+      args:
+        - VITE_API_URL=http://localhost:8000
+    ports:
+      - 80:80
+    profiles: ['basic', 'full']
+  
+  data2graph_backend:
+    container_name: data2graph_backend
+    image: ghcr.io/gorgonun/data_to_graph_backend:latest
+    networks:
+      - metrics_network
+      - neo4j_network
+    volumes:
+      - /tmp/ray_tmp:/tmp/ray
+    build:
+      context: .
+    ports:
+      - 8265:8265
+      - 7475:7475
+      - 8000:8000
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - neo4j
+    profiles: ['basic', 'full']
+
   mongodb:
     image: mongo:7.0
     command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
       - 27017:27017
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env.mongodb
+    networks:
+      - neo4j_network
     healthcheck:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
       interval: 5s
@@ -21,10 +74,10 @@ services:
     volumes:
       - ${MONGODB_DATA}:/data/db
 
-  mongo-seed:
+  mongo_seed:
     image: mongo:7.0
-    links:
-      - mongodb
+    networks:
+      - neo4j_network
     volumes:
       - ./mongo-seed:/mongo-seed
     command:
@@ -33,15 +86,17 @@ services:
       - .env.mongo_seed
     profiles: ['load-data']
 
-  mongo-express:
+  mongo_express:
     image: mongo-express
     ports:
       - 8081:8081
     env_file:
       - .env.mongo_express
-    links:
-      - mongodb
+    networks:
+      - neo4j_network
     profiles: ['full']
+    depends_on:
+      - mongodb
 
   neo4j:
     image: neo4j:5.20.0
@@ -55,4 +110,4 @@ services:
       - .env.neo4j
     profiles: ['basic', 'full']
     networks:
-      - neo4j-network
+      - neo4j_network

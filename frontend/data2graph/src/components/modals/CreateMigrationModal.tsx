@@ -140,7 +140,7 @@ const NewMigrationScreen = ({
     );
   };
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -159,21 +159,24 @@ const NewMigrationScreen = ({
           mongoDbUrl={newPartialMigrationData.mongodb_url ?? null}
           databaseName={newPartialMigrationData.mongodb_database ?? null}
           collectionName={newPartialMigrationData.mongodb_collection ?? null}
-          onMongoDbUrlChange={(mongodb_url) =>
-            setNewPartialMigrationData((prev) => ({ ...prev, mongodb_url }))
-          }
-          onDatabaseNameChange={(mongodb_database) =>
-            setNewPartialMigrationData((prev) => ({
-              ...prev,
-              mongodb_database,
-            }))
-          }
-          onCollectionNameChange={(mongodb_collection) =>
-            setNewPartialMigrationData((prev) => ({
-              ...prev,
-              mongodb_collection,
-            }))
-          }
+          onMongoDbUrlChange={(mongodb_url) => {
+            if (mongodb_url)
+              setNewPartialMigrationData((prev) => ({ ...prev, mongodb_url }));
+          }}
+          onDatabaseNameChange={(mongodb_database) => {
+            if (mongodb_database)
+              setNewPartialMigrationData((prev) => ({
+                ...prev,
+                mongodb_database,
+              }));
+          }}
+          onCollectionNameChange={(mongodb_collection) => {
+            if (mongodb_collection)
+              setNewPartialMigrationData((prev) => ({
+                ...prev,
+                mongodb_collection,
+              }));
+          }}
         />,
         "Create a Migration",
       ],
@@ -374,8 +377,8 @@ interface NewMigrationScreenDatabaseDataTabProps {
   databaseName: string | null;
   collectionName: string | null;
   onMongoDbUrlChange: (url: string) => void;
-  onDatabaseNameChange: (name: string) => void;
-  onCollectionNameChange: (name: string) => void;
+  onDatabaseNameChange: (name: string | null) => void;
+  onCollectionNameChange: (name: string | null) => void;
 }
 
 const NewMigrationScreenDatabaseDataTab = ({
@@ -444,10 +447,12 @@ const NewMigrationScreenDatabaseDataTab = ({
     }
   }, [testConnection, loadCollections]);
 
-  const setDatabase = (database: string) => {
-    onDatabaseNameChange(database);
-    setLoadCollections(true);
-  }
+  const setDatabase = (database: string | null) => {
+    if (database) {
+      onDatabaseNameChange(database);
+      setLoadCollections(true);
+    }
+  };
 
   return (
     <Stack mt={2}>
@@ -578,7 +583,8 @@ const NewMigrationScreenDatabaseDataTab = ({
       </Stack>
       <Stack mt={4}>
         <Box sx={{ backgroundColor: "lightGray" }}>
-          {((loadingCollections || loadingDatabases) ||
+          {(loadingCollections ||
+            loadingDatabases ||
             mongodbConnectionStatus === "error" ||
             mongodbConnectionStatus === "success") && (
             <Box>

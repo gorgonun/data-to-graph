@@ -1,9 +1,9 @@
 name: Deploy Images to GHCR
 
 on:
-    # push:
-    #   branches:
-    #     - main
+    push:
+      branches:
+        - main
     workflow_dispatch:
 
 jobs:
@@ -21,6 +21,4 @@ jobs:
               password: ${{secrets.GITHUB_TOKEN}}
 
           - name: 'Build Inventory Image'
-            run: |
-              docker build . --tag ghcr.io/gorgonun/store:latest
-              docker push ghcr.io/gorgonun/store:latest
+            run: docker-compose push

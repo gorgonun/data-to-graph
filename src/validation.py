@@ -56,7 +56,6 @@ async def main():
         "NEO4J_USER": os.environ["NEO4J_USER"],
         "NEO4J_PASSWORD": os.environ["NEO4J_PASSWORD"],
         "PROMETHEUS_HOST": os.environ["PROMETHEUS_HOST"],
-        "CUSTOM_HOST": os.environ["CUSTOM_HOST"],
     })
 
     await create_new_random_validator(
