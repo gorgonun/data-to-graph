@@ -6,11 +6,10 @@ global:
 scrape_configs:
 - job_name: 'turbo_c2'
   static_configs:
-    - targets: ['192.168.0.34:8001']
-    - targets: ['192.168.0.34:7475']
+    - targets: ['data2graph_backend:7475']
 
 # Scrape from each ray node as defined in the service_discovery.json provided by ray.
 - job_name: 'ray'
   file_sd_configs:
   - files:
-    - '/tmp/ray/prom_metrics_service_discovery.json'
+    - '/tmp/ray_tmp/prom_metrics_service_discovery.json'

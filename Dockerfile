@@ -18,37 +18,20 @@ WORKDIR /app
 COPY poetry.lock pyproject.toml ./
 
 # this will create the folder /app/.venv
-RUN poetry install --no-root --no-ansi --without dev
+RUN poetry install --no-root --no-ansi
 
 # ------------------------------------------------------------------------------------------------------------------------
 FROM python:3.10.14-slim-bullseye
 LABEL org.opencontainers.image.source="https://github.com/gorgonun/data-to-graph"
 
-ARG MONGODB_URL
-ARG MONGODB_COLLECTION
-ARG MONGODB_DATABASE
-ARG NEO4J_URL
-ARG NEO4J_USER
-ARG NEO4J_PASSWORD
-ARG PROMETHEUS_HOST
-ARG CUSTOM_HOST
-
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PATH="/app/.venv/bin:$PATH" \
-    MONGODB_URL=$MONGODB_URL \
-    MONGODB_COLLECTION=$MONGODB_COLLECTION \
-    MONGODB_DATABASE=$MONGODB_DATABASE \
-    NEO4J_URL=$NEO4J_URL \
-    NEO4J_USER=$NEO4J_USER \
-    NEO4J_PASSWORD=$NEO4J_PASSWORD \
-    PROMETHEUS_HOST=$PROMETHEUS_HOST \
-    CUSTOM_HOST=$CUSTOM_HOST
-
 WORKDIR /app
-EXPOSE 5173 8265 7475
 
 # copy the venv folder from builder image 
 COPY --from=builder /app/.venv ./.venv
 
-CMD ["python", "src/json2graph/main.py"]
+COPY src/ ./src
+
+ENV PATH="/app/.venv/bin:${PATH}"
+EXPOSE 8265 7475 8000
+
+CMD ["sh", "-c", "ray start --head --dashboard-host 0.0.0.0 --temp-dir=/tmp/ray_tmp && python src/main.py"]

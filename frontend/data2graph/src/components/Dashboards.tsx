@@ -12,7 +12,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const Dashboards = () => {
-  const [metricsRefetchTimeMills, setMetricsRefetchTimeMills] = useState(1000);
+  const [metricsRefetchTimeMills] = useState(1000);
   const [metrics, setMetrics] = useState<GetMetricsResponse | null>(null);
   const [expandAllTime, setExpandAllTime] = useState(true);
   const [expandDailyMetrics, setExpandDailyMetrics] = useState(true);
@@ -28,9 +28,9 @@ const Dashboards = () => {
     return () => clearInterval(interval);
   }, [metricsRefetchTimeMills]);
 
-  const nodeBySecondRate = metrics?.nodes_created_rate[0]?.values[0].value || 0;
+  const nodeBySecondRate = +(metrics?.nodes_created_rate[0]?.values[0].value || 0);
   const relationsBySecondRate =
-    metrics?.relationship_created_rate[0]?.values[0].value || 0;
+   +(metrics?.relationship_created_rate[0]?.values[0].value || 0);
 
   const [formattedChartData, allMigrationNames] = (() => {
     const aggregatedData = new Map<string, Map<string, number>>();
@@ -198,14 +198,14 @@ const Dashboards = () => {
                         <AggregatedDailyTotalCard
                           key={`daily-total-card-${index}`}
                           migrationName={`Nodes for migration ${metric.labels.migration_name}`}
-                          migrationValue={metric.values[0].value}
+                          migrationValue={+metric.values[0].value}
                         />
                       ))}
                       {metrics?.relationship_created_total.map((metric, index) => (
                         <AggregatedDailyTotalCard
                           key={`daily-total-card-${index}`}
                           migrationName={`Relationship for migration ${metric.labels.migration_name}`}
-                          migrationValue={metric.values[0].value}
+                          migrationValue={+metric.values[0].value}
                         />
                       ))}
                       {noDataAvailable && (

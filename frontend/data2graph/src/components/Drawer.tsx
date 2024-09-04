@@ -113,7 +113,7 @@ export default function MiniDrawer({ children }: DrawerExternalContentProps) {
 
   const [dataFetched, setDataFetched] = React.useState<boolean>(false);
   const [refetchData, setRefetchData] = React.useState<boolean>(false);
-  const [migrations, setMigrations] = React.useState<
+  const [_migrations, setMigrations] = React.useState<
     MigrationWithExtraFields[]
   >([]);
 
@@ -167,7 +167,7 @@ export default function MiniDrawer({ children }: DrawerExternalContentProps) {
           {[
             { name: "Dashboard", icon: <InsightsIcon />, to: "/" },
             { name: "Migrations", icon: <RouteIcon />, to: "/migrations" },
-          ].map(({ name, icon, to }, index) => (
+          ].map(({ name, icon, to }) => (
             <ListItem key={name} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{

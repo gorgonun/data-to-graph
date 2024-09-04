@@ -1,0 +1,6 @@
+data/
+frontend/
+mongo-seed/
+neo4j/
+tests/
+tmp/

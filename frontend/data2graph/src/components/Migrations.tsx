@@ -46,7 +46,7 @@ export default function Migrations() {
     null
   );
 
-  const [statusRefetchTimeMills, setStatusRefetchTimeMills] = useState(1000);
+  const [statusRefetchTimeMills] = useState(1000);
   const [migrationStatus, setMigrationStatus] = useState<{
     [migrationName: string]: MigrationStatusResponse;
   } | null>(null);

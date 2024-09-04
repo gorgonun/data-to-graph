@@ -1,6 +1,7 @@
 import axios from "axios";
 import { JobInstanceDataRequest } from "../domain/job-instance-data-request";
 import { apiHost } from "../config";
+import { PositionDefinition } from "../domain/layout-definition";
 
 export async function getJobs(): Promise<string[]> {
   return (await axios.get(`${apiHost}/api/v1/jobs`)).data;
