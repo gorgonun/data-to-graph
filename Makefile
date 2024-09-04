@@ -106,3 +106,8 @@ submit_validation_job:
 submit_stack_overflow_migration_job:
 	# ray job submit --working-dir src/ -- python stack_overflow_migration.py
 	python src/stack_overflow_migration.py
+
+# FIXME: setup_env_file is because MONGODB_DATA and NEO4J_DATA are not being set and it fails docker compose push
+push_images: setup_env_file
+	docker compose --profile $(profile) build
+	docker compose --profile $(profile) push

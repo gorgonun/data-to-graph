@@ -1,24 +1,36 @@
 name: Deploy Images to GHCR
 
 on:
-    push:
-      branches:
-        - main
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docker-compose.yaml'
+      - 'Dockerfile'
+      - 'src/**'
+      - 'frontend/data2graph/**'
+  workflow_dispatch:
 
 jobs:
-    push-store-image:
-        runs-on: ubuntu-latest
-        steps:
-          - name: 'Checkout GitHub Action'
-            uses: actions/checkout@main
+  push-store-image:
+    runs-on: ubuntu-latest
 
-          - name: 'Login to GitHub Container Registry'
-            uses: docker/login-action@v1
-            with:
-              registry: ghcr.io
-              username: ${{github.actor}}
-              password: ${{secrets.GITHUB_TOKEN}}
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
 
-          - name: 'Build Inventory Image'
-            run: docker-compose push
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@main
+
+      - name: "Login to GitHub Container Registry"
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: "Build Inventory Image"
+        run: make push_images
