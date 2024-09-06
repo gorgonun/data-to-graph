@@ -24,7 +24,7 @@ neo4j_user ?= neo4j
 neo4j_password ?= admin
 neo4j_port ?= 7687
 neo4j_data_folder ?= ./data/neo4j/
-neo4j_host ?= 'neo4j'
+neo4j_host ?= neo4j
 
 # local
 prometheus_host ?= 'http://prometheus'
@@ -106,6 +106,9 @@ submit_validation_job:
 submit_stack_overflow_migration_job:
 	# ray job submit --working-dir src/ -- python stack_overflow_migration.py
 	python src/stack_overflow_migration.py
+
+build_images: setup_env_file
+	docker compose --profile $(profile) build
 
 # FIXME: setup_env_file is because MONGODB_DATA and NEO4J_DATA are not being set and it fails docker compose push
 push_images: setup_env_file

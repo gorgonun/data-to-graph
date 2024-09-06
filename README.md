@@ -1,82 +1,140 @@
 # Data2Graph
-Continuação do Trabalho de conclusão do curso de Sistemas de Informação Json2Graph
 
-## Makefile
+Data2Graph is a tool to automatically migrate data from semi-structured sources to graph databases, with current support for MongoDB and Neo4J.
 
-Para facilitar a configuração do Docker Compose e possibilitar a correta comunicação entre os containers e o script, foi criado um Makefile na raiz do repositório com as configurações padrões para teste local, sendo elas possíveis de modificação por meio dos parâmetros.
+## Getting Started
 
-As configurações são baseadas em variáveis de ambiente. Para garantir a separação das informações relevantes à aplicação, são criados diversos arquivos `.env` com as configurações que serão utilizadas. Para o MongoDB será criado o arquivo `.env.mongodb`, para o MongoExpress `.env.mongo_express`, para o Mongo Seed, `.env.mongo_seed`, para o Neo4J `.env.neo4j`. O arquivo na raiz são as configurações para o script de migração de dados.
+To get started with the project, you can use the docker images provided in the GitHub Packages or build the images yourself using the Dockerfiles provided in the repository or the docker compose file. Also, you can run the project locally using the Makefile provided in the repository.
 
-### Parâmetros
+### Prerequisites
 
-- **profile**: O perfil escolhido para rodar os scripts de infraestrutura. As opções são `basic` e `full`.
-- **clean**: Caso verdadeiro, irá apagar as configurações prévias nos arquivos de variáveis de ambiente e irá recriá-los conforme as configurações especificadas.
-- **mongodb_root_username**: Nome de usuário do administrador do MongoDB. (padrão: `root`)
-- **mongodb_root_password**: Senha do administrador do MongoDB. (padrão: `root`)
-- **mongodb_database**: Nome do banco de dados. (padrão: `test`)
-- **mongodb_collection**: Nome da coleção. (padrão: `nyt`)
-- **mongodb_url**: URL de conexão com o MongoDB. (padrão: `mongodb://$(mongodb_root_username):$(mongodb_root_password)@mongodb:27017/$(mongodb_database)?authSource=admin`)
-- **neo4j_user**: O nome de usuário do banco de dados Neo4j. (padrão: `neo4j`)
-- **neo4j_password**: A senha do banco de dados Neo4j. (padrão: `neo4j`)
+#### To Use Docker Images
 
-### Arquivo .env.mongodb
+- Docker [Docker Documentation](https://docs.docker.com/get-docker/).
 
-- **MONGO_INITDB_ROOT_USERNAME**: Nome de usuário root
-- **MONGO_INITDB_ROOT_PASSWORD**: Senha de usuário root
-- **MONGO_INITDB_DATABASE**: Database
+#### To Build Docker Images
 
-### Arquivo .env.mongo_express
+- Docker [Docker Documentation](https://docs.docker.com/get-docker/).
+- Docker Compose [Docker Compose Documentation](https://docs.docker.com/compose/install/).
 
-- **ME_CONFIG_MONGODB_URL**: URL de conexão do MongoDB
-- **ME_CONFIG_MONGODB_ADMINUSERNAME**: Nome de usuário do administrador
-- **ME_CONFIG_MONGODB_ADMINPASSWORD**: Senha do administrador
+#### Running Locally Without Docker Compose
 
-### Arquivo .env.neo4j
+- Python 3.10 or higher [Python Documentation](https://www.python.org/downloads/).
+- Poetry [Poetry Documentation](https://python-poetry.org/docs/).
+- Node.js 20.0.0 or higher [Node.js Documentation](https://nodejs.org/en/download/).
 
-- **NEO4J_AUTH**: Usuário e senha do Neo4J
-- **NEO4J_dbms_security_auth__minimum__password__length**: Configuração de tamanho mínimo da senha. Como essa configuração é para teste, não produção, então foi flexibilizado para tamanho 1 (mínimo).
+### Using Docker Images
 
-### Arquivo .env.mongo_seed
+To use the images provided in the GitHub Packages, you can use the following commands:
 
-- **MONGO_SEED_MONGODB_URL**: URL de conexão do MongoDB
-- **MONGO_SEED_MONGODB_COLLECTION**: Coleção a ser populada
+```bash
+export NEO4J_URL=<neo4j url>
+export NEO4J_USER=<neo4j user>
+export NEO4J_PASSWORD=<neo4j password>
+export PROMETHEUS_HOST=<prometheus host>
 
-### Arquivo .env
+docker run -d -p 8000:8000 -p 8265:8265 -p 7475:7475 --name data2graph_backend -e NEO4J_URL=$NEO4J_URL -e NEO4J_USER=$NEO4J_USER -e NEO4J_PASSWORD=$NEO4J_PASSWORD -e PROMETHEUS_HOST=$PROMETHEUS_HOST  ghcr.io/gorgonun/data_to_graph_backend:latest
 
-- **MONGODB_DATA**: Pasta de dados do MongoDB
-- **NEO4J_DATA**: Pasta de dados do Neo4J
-- **MONGODB_URL**: URL de conexão do MongoDB
-- **MONGODB_COLLECTION**: Coleção a ser testada
-- **MONGODB_DATABASE**: Database
-- **NEO4J_URL**: URL de conexão do Neo4J
-- **NEO4J_USER**: Usuário do Neo4J
-- **NEO4J_PASSWORD**: Senha do Neo4J
+docker run -d -p 80:80 --name data2graph_frontend ghcr.io/gorgonun/data_to_graph_frontend:latest
+```
 
-### Comandos
+The frontend image will be available at `http://localhost:80` and will make requests to the backend at `http://localhost:8000`. To change the backend URL, you can use the environment variable `VITE_API_URL` and build the image.
 
-- **write_env_values**: Escreve os valores das variáveis de ambiente nos arquivos .env
-- **setup_env_file**: Escreve os valores das variáveis de ambiente nos arquivos .env, apagando os arquivos .env antigos se `clean = true`
-- **start_infra**: Inicia a infraestrutura com o Docker Compose com as configurações definidas.
-- **stop_infra**: Para a infraestrutura com o Docker Compose.
-- **run**: Inicia a execução do script de migração.
+### Building Docker Images
 
-## Perfis
+To build the images yourself, you can use the following command:
 
-No Docker Compose estão configurados dois perfis de execução: `basic` e `full`. No perfil `basic` estão configurados os containers do MongoDB Seed, MongoDB e o Neo4J. No perfil `full` estão todos os containers do `basic`, com a adição do MongoExpress para facilitar a visualização e depuração dos dados disponibilizados no MongoDB.
+```bash
+make build_images
+```
 
-### Perfil basic
+This will use docker compose to build the images and make them available for use. If you want to build the images individually, you can use the following commands:
 
-O perfil `basic` tem a intenção de ser o básico para o teste local. Por conta disso apenas o essencial é configurado, sendo ele o banco de origem, destino e os dados para teste.
+```bash
+export VITE_API_URL=http://localhost:8000
 
-O MongoDB está disponível na porta 27017 e os seus dados são salvos na pasta local `data/mongodb`, assim permitindo a persistência mesmo depois do fim do container.
+docker build -t data2graph_frontend --build-arg VITE_API_URL=$VITE_API_URL  ./frontend/data2graph/
+docker build -t data2graph_backend .
+```
 
-O MongoSeed utiliza de scripts para popular a instância do MongoDB. Para isso ele utiliza uma imagem do próprio MongoDB, que possui a interface de comando. Os exemplos estão disponíveis na pasta local `mongo-seed`, junto com o script bash para popular o banco.
+### Running Locally with Docker Compose
 
-O Admin do Neo4J está disponível na porta 7474, sendo a porta do Bolt a padrão 7687. Seus dados são salvos na pasta local `data/neo4j`, assim permitindo a persistência mesmo depois do fim do container.
+To run the project locally, you can use the docker compose file provided in the repository. The docker compose file will start a ray cluster, some services of user choice and the frontend. You can use the following command to start the project:
 
-### Perfil full
+```bash
+make start_infra
+```
 
-O perfil `full` tem a intenção de ser o necessário para depuração dos testes. Por conta disso foi disponibilizado o MongoExpress, já que por padrão a imagem do Mongo não possui interface web para administração.
+#### Makefile
 
-O MongoExpress está disponível na porta 8081 e pode ser utilizado para visualizar o estado do banco, suas métricas e dados conforme o necessário.
+##### Parameters
 
+- **profile**: The profile to be used to run the infrastructure. The options are `basic`, `full` and `load-data`.
+- **clean**: If true, it will delete the previous configurations in the environment files and recreate them according to the specified configurations.
+- **mongodb_database**: The name of the MongoDB database. (default: `test`)
+- **mongodb_collection**: The name of the MongoDB collection. (default: `nyt`)
+- **mongodb_url**: The connection URL for MongoDB. (default: `mongodb://mongodb:27017/`)
+- **mongodb_data_folder**: The folder to save the MongoDB data. (default: `./data/mongodb/`)
+- **neo4j_user**: The username for Neo4J. (default: `neo4j`)
+- **neo4j_password**: The password for Neo4J. (default: `admin`)
+- **neo4j_port**: The port for Neo4J. (default: `7687`)
+- **neo4j_data_folder**: The folder to save the Neo4J data. (default: `./data/neo4j/`)
+- **neo4j_host**: The host for Neo4J. (default: `neo4j`)
+- **prometheus_host**: The host for Prometheus. (default: `http://prometheus`)
+
+To run the project with the `full` profile and mongodb url, you can use the following command:
+
+```bash
+make start_infra profile=full mongodb_url=mongodb://localhost:27017/
+```
+
+##### Commands
+
+- **write_env_values**: Writes the environment variables values to the .env files.
+- **setup_env_file**: Writes the environment variables values to the .env files, deleting the old .env files if `clean = true`.
+- **start_infra**: Starts the infrastructure with Docker Compose with the defined configurations.
+- **stop_infra**: Stops the infrastructure with Docker Compose.
+- **run**: Starts the execution of the migration script.
+
+##### Profiles
+
+In the Docker Compose file, two profiles are configured: `basic` and `full`. In the `basic` profile, only the essential services are configured, being the source and destination databases and the data for testing. In the `full` profile, all services from the `basic` profile are configured, with the addition of MongoExpress to facilitate the visualization and debugging of the data available in MongoDB. The `load-data` profile is used to load data into the MongoDB.
+
+##### .env Files
+
+To run the script and setup the environment with docker compose, some environment variables are needed. The environment variables are stored in some .env files that are created with the command **write_env_values** and with other commands that needs it. The .env files are:
+
+- **.env**: The environment variables for the migration script.
+- **.env.mongo_seed**: The environment variables for the MongoDB seed.
+- **.env.mongo_express**: The environment variables for the MongoExpress.
+- **.env.mongodb**: The environment variables for the MongoDB.
+- **.env.neo4j**: The environment variables for the Neo4J.
+
+### Running Locally without Docker Compose
+
+To run the project locally, you need to install the dependencies and run the project using the Makefile provided in the repository. The Makefile will start a ray cluster and submit the main job. Also, you will need to run the frontend with Node.js 20.0.0 or higher. You can use the following command to install the poetry dependencies:
+
+```bash
+poetry install
+```
+
+and then you can choose one of the followings:
+
+```bash
+make run
+```
+
+or
+
+```bash
+make start_ray_cluster
+make submit_main_job
+```
+
+To start the frontend, you can use the following commands:
+
+```bash
+cd frontend/data2graph
+npm install
+npm run dev
+```
