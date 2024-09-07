@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-i18n-output",
+  "name": "Data2Graph",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,7 +19,8 @@
     "next-language-detector": "^1.1.0",
     "next-translate": "^2.6.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-syntax-highlighter": "^15.5.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

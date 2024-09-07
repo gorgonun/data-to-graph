@@ -6,6 +6,7 @@
     "home": {
       "title": "Leverage the full potential of your data",
       "subtitle": "Don't become a hostage to the format",
+      "description": "Data2Graph is a tool that allows the migration of semi-structured data to graph databases, with support for source <b>{{src}}</b> and destination <b>{{dest}}</b>.",
       "messageBlock": {
         "automaticMigration": {
           "title": "Automatic migration",

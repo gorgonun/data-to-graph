@@ -4,47 +4,27 @@ import Button from "@mui/material/Button";
 import * as React from "react";
 import { useI18n } from "@/hooks/useI18n";
 import MenuItem from "@mui/material/MenuItem";
-import { languageDetector } from "@/helpers/languageDetector";
 import { useRouter } from "next/router";
 import Menu from "@mui/material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useTheme, alpha } from "@mui/material/styles";
+import { useLanguage } from "@/Providers/LanguageContext";
+import { D2gLocale } from "../../../i18n";
+import { getHref } from "./language-switcher-helper";
 
-interface LanguageSwitchProps {
-  locales: string[];
-  currentLocale: string;
-}
-
-export function LanguageSwitcher({
-  locales,
-  currentLocale,
-}: LanguageSwitchProps) {
+export function LanguageSwitcherButton() {
   const { t } = useI18n({ namespace: "main" });
   const { t: tGlobal } = useI18n({ namespace: "globalCommon" });
   const router = useRouter();
   const theme = useTheme();
+  const { locales, currentLocale, setLocale } = useLanguage();
 
-  const handleLocaleChange = (newLocale: string) => {
+  const handleLocaleChange = (newLocale: D2gLocale) => {
     handleClose();
-    languageDetector.cache ? languageDetector.cache(newLocale) : {};
+    setLocale?.(newLocale);
 
-    const href = getHref(newLocale);
+    const href = getHref(newLocale, router);
     router.push(href);
-  };
-
-  const getHref = (locale: string) => {
-    let pName = router.pathname;
-
-    Object.keys(router.query).forEach((k) => {
-      if (k === "locale") {
-        pName = pName.replace(`[${k}]`, locale);
-        return;
-      }
-
-      pName = pName.replace(`[${k}]`, String(router.query[k]));
-    });
-
-    return pName;
   };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -85,18 +65,15 @@ export function LanguageSwitcher({
         onClose={handleClose}
         disableScrollLock
         sx={{
-          '& .MuiMenu-list': {
-            padding: '4px 0',
+          "& .MuiMenu-list": {
+            padding: "4px 0",
           },
-          '& .MuiMenuItem-root': {
-            '& .MuiSvgIcon-root': {
+          "& .MuiMenuItem-root": {
+            "& .MuiSvgIcon-root": {
               fontSize: 18,
             },
-            '&:active': {
-              backgroundColor: alpha(
-                theme.palette["primary"].main,
-                0.5
-              ),
+            "&:active": {
+              backgroundColor: alpha(theme.palette["primary"].main, 0.5),
             },
           },
         }}
@@ -104,9 +81,14 @@ export function LanguageSwitcher({
         {locales.map((locale, i) => (
           <MenuItem
             key={i}
-            onClick={() => handleLocaleChange(locale)}
+            onClick={() => handleLocaleChange(locale as D2gLocale)}
             disableRipple
-            sx={{ backgroundColor: currentLocale === locale ? alpha(theme.palette["primary"].main, 0.1) : "transparent" }}
+            sx={{
+              backgroundColor:
+                currentLocale === locale
+                  ? alpha(theme.palette["primary"].main, 0.1)
+                  : "transparent",
+            }}
             disabled={currentLocale === locale}
           >
             {tGlobal(locale)}
