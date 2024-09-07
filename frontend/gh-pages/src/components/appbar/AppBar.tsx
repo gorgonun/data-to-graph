@@ -6,23 +6,17 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  Grid,
-  Stack,
-} from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { IconD2G } from "./icons/d2g-icon";
 import { pages } from "../pages";
-import { i18nConfig } from "../../../i18n";
 
 import * as React from "react";
-import { useLanguage } from "@/Providers/LanguageContext";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { LanguageSwitcherButton } from "./LanguageSwitcherButton";
 import { D2GDrawer } from "./Drawer";
 import { useI18n } from "@/hooks/useI18n";
 
 export function D2GAppBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const currentLocale = useLanguage();
   const { t } = useI18n({ namespace: "main" });
   const { t: tCommon } = useI18n({ namespace: "common" });
 
@@ -58,13 +52,7 @@ export function D2GAppBar() {
               >
                 <IconD2G sx={{ mr: { xs: 0, md: 1 } }} />
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                  {/* {i18nConfig.locales.map((locale) => (
-                    <LanguageSwitcher key={locale} locale={locale} />
-                  ))} */}
-                  <LanguageSwitcher
-                    locales={i18nConfig.locales}
-                    currentLocale={currentLocale}
-                  />
+                  <LanguageSwitcherButton />
                   {pages.map(({ label, href }) => (
                     <Button
                       key={label}
@@ -96,7 +84,7 @@ export function D2GAppBar() {
                     width: "fit-content",
                   }}
                 >
-                  {tCommon('actionButton')}
+                  {tCommon("actionButton")}
                 </Button>
               </Stack>
             </Grid>

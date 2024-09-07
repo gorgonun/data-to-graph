@@ -6,6 +6,7 @@
     "home": {
       "title": "Aproveite todo o potencial dos seus dados",
       "subtitle": "Não se torne refém do formato",
+      "description": "Data2Graph é uma ferramenta que permite a migração de dados semi-struturados para bancos de dados de grafos, com suporte para origem <b>{{src}}</b> e destino <b>{{dest}}</b>.",
       "messageBlock": {
         "automaticMigration": {
           "title": "Migração automática",

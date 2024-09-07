@@ -10,11 +10,11 @@ import { pages } from "../pages";
 
 import * as React from "react";
 import { useI18n } from "@/hooks/useI18n";
+import { LanguageSwitcherListButton } from "./LanguageSwitcherListButton";
 
 interface D2GDrawerProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  // onClose: () => void;
 }
 
 export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
@@ -27,7 +27,6 @@ export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
     <Box
       sx={{ width: 250 }}
       role="presentation"
-      onClick={() => toggleDrawer(false)}
     >
       <List>
         {pages.map(({ label, href }, index) => (
@@ -37,6 +36,7 @@ export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
             </ListItemButton>
           </ListItem>
         ))}
+        <LanguageSwitcherListButton onClose={() => toggleDrawer(false)} />
       </List>
     </Box>
   );

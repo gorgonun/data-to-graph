@@ -19,10 +19,11 @@ import { ResourceBlock, ResourceBlockProps } from "./ResourceBlock";
 import { pages } from "./pages";
 import { IconD2G } from "./appbar/icons/d2g-icon";
 import { useI18n } from "../hooks/useI18n";
+import Trans from "next-translate/Trans";
 
-type Message = (Omit<MessageBlockProps, "title" | "message"> & {
+type Message = Omit<MessageBlockProps, "title" | "message"> & {
   label: string;
-});
+};
 
 const messages: Message[] = [
   {
@@ -92,7 +93,7 @@ export function MainPage() {
 
   return (
     <Box>
-      <Stack>
+      <Stack width="100%" maxWidth="lg" mx="auto">
         <Stack
           ml={{ xs: 0, md: 2 }}
           mt={{ xs: 0, md: 15 }}
@@ -107,13 +108,21 @@ export function MainPage() {
               fontWeight={700}
               color="primary"
             >
-              {/* Aproveite todo o potencial dos seus dados */}
               {t(`pages.home.title`)}
             </Typography>
           </Stack>
           <Stack mt={2}>
             <Typography fontSize="1.5rem">
               {t(`pages.home.subtitle`)}
+            </Typography>
+          </Stack>
+          <Stack mt={{ xs: 2, md: 5 }} px={{ xs: 0, md: 20 }} textAlign='justify'>
+            <Typography fontSize="0.9rem" whiteSpace="pre-wrap">
+              <Trans
+                i18nKey="main:pages.home.description"
+                components={{ b: <b /> }}
+                values={{ src: "MongoDB", dest: "Neo4j" }}
+              />
             </Typography>
           </Stack>
           <Stack
@@ -128,7 +137,7 @@ export function MainPage() {
                 variant="contained"
                 sx={{ width: { xs: "100%", md: "auto" } }}
               >
-                {tCommon('actionButton')}
+                {tCommon("actionButton")}
               </Button>
             </Box>
             <Box ml={{ xs: 0, md: 2 }} mt={{ xs: 2, md: 0 }}>
@@ -138,7 +147,7 @@ export function MainPage() {
                 variant="outlined"
                 sx={{ width: { xs: "100%", md: "auto" } }}
               >
-                {tCommon('documentationButton')}
+                {tCommon("documentationButton")}
               </Button>
             </Box>
           </Stack>
@@ -160,15 +169,23 @@ export function MainPage() {
                 <Grid container key={index}>
                   <Grid item xs={12} md={6}>
                     <MessageBlock
-                      title={t(`pages.home.messageBlock.${messageOne.label}.title`)}
-                      message={t(`pages.home.messageBlock.${messageOne.label}.content`)}
+                      title={t(
+                        `pages.home.messageBlock.${messageOne.label}.title`
+                      )}
+                      message={t(
+                        `pages.home.messageBlock.${messageOne.label}.content`
+                      )}
                       icon={messageOne.icon}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <MessageBlock
-                      title={t(`pages.home.messageBlock.${messageTwo.label}.title`)}
-                      message={t(`pages.home.messageBlock.${messageTwo.label}.content`)}
+                      title={t(
+                        `pages.home.messageBlock.${messageTwo.label}.title`
+                      )}
+                      message={t(
+                        `pages.home.messageBlock.${messageTwo.label}.content`
+                      )}
                       icon={messageTwo.icon}
                     />
                   </Grid>
