@@ -20,6 +20,7 @@ import { pages } from "./pages";
 import { IconD2G } from "./appbar/icons/d2g-icon";
 import { useI18n } from "../hooks/useI18n";
 import Trans from "next-translate/Trans";
+import { RunTab } from "./RunTab";
 
 type Message = Omit<MessageBlockProps, "title" | "message"> & {
   label: string;
@@ -116,7 +117,11 @@ export function MainPage() {
               {t(`pages.home.subtitle`)}
             </Typography>
           </Stack>
-          <Stack mt={{ xs: 2, md: 5 }} px={{ xs: 0, md: 20 }} textAlign='justify'>
+          <Stack
+            mt={{ xs: 2, md: 5 }}
+            px={{ xs: 0, md: 20 }}
+            textAlign="justify"
+          >
             <Typography fontSize="0.9rem" whiteSpace="pre-wrap">
               <Trans
                 i18nKey="main:pages.home.description"
@@ -149,6 +154,16 @@ export function MainPage() {
               >
                 {tCommon("documentationButton")}
               </Button>
+            </Box>
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack sx={{ backgroundColor: alpha('#9d8a54', 0.2)}}>
+        <Stack width="100%" maxWidth="lg" mx="auto">
+          <Stack p={{xs: 2, md: 5}}>
+            <Typography>{t('pages.home.runBlock.title')}</Typography>
+            <Box mt={2}>
+              <RunTab />
             </Box>
           </Stack>
         </Stack>

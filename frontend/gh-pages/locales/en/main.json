@@ -7,6 +7,12 @@
       "title": "Leverage the full potential of your data",
       "subtitle": "Don't become a hostage to the format",
       "description": "Data2Graph is a tool that allows the migration of semi-structured data to graph databases, with support for source <b>{{src}}</b> and destination <b>{{dest}}</b>.",
+      "runBlock": {
+        "title": "How do you want to run Data2Graph?",
+        "runWithDocker": "With Docker",
+        "runWithDockerCompose": "With Docker Compose",
+        "manually": "Manually"
+      },
       "messageBlock": {
         "automaticMigration": {
           "title": "Automatic migration",
