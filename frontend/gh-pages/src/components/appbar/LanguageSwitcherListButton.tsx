@@ -1,12 +1,6 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-
 import * as React from "react";
 import { useI18n } from "@/hooks/useI18n";
-import MenuItem from "@mui/material/MenuItem";
 import { useRouter } from "next/router";
-import Menu from "@mui/material/Menu";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useTheme, alpha } from "@mui/material/styles";
 import { useLanguage } from "@/Providers/LanguageContext";
 import { D2gLocale } from "../../../i18n";
