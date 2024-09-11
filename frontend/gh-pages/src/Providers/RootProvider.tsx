@@ -8,6 +8,7 @@ import { Locale } from "@/types/i18n.type";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../theme";
+import { LanguageProvider, useLanguage } from "./LanguageContext";
 
 interface IRootProvider extends PropsWithChildren {}
 
@@ -24,13 +25,14 @@ interface IRootProvider extends PropsWithChildren {}
  */
 export const RootProvider = ({ children }: IRootProvider) => {
   const router = useRouter();
+  const { currentLocale } = useLanguage();
 
   const lang = i18nConfig.locales.includes(router.query.locale as Locale)
     ? (router.query.locale as Locale)
     : i18nConfig.defaultLocale;
 
   return (
-    <I18nProvider lang={lang} namespaces={getLanguageFile(lang)}>
+    <I18nProvider lang={currentLocale} namespaces={getLanguageFile(currentLocale)}>
       <LanguageWrapper>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>

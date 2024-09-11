@@ -11,26 +11,33 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { TooltipOn } from "../TooltipOn";
 
 interface LanguageSwitcherListButtonProps {
   onClose?: () => void;
 }
 
-export function LanguageSwitcherListButton({ onClose }: LanguageSwitcherListButtonProps) {
+export function LanguageSwitcherListButton({
+  onClose,
+}: LanguageSwitcherListButtonProps) {
   const { t } = useI18n({ namespace: "main" });
   const { t: tGlobal } = useI18n({ namespace: "globalCommon" });
+  const { t: tCommon } = useI18n({ namespace: "common" });
+
   const router = useRouter();
   const theme = useTheme();
-  const { locales, currentLocale, setLocale } = useLanguage();
+  const { availableLocales, globalLocales, currentLocale, setLocale } =
+    useLanguage();
   const [openCollapse, setOpenCollapse] = React.useState(false);
 
   const handleLocaleChange = (newLocale: D2gLocale) => {
     setLocale?.(newLocale);
-
-    const href = getHref(newLocale, router);
-    router.push(href);
     onClose?.();
   };
+
+  if (setLocale === undefined) {
+    return <></>;
+  }
 
   return (
     <>
@@ -40,20 +47,30 @@ export function LanguageSwitcherListButton({ onClose }: LanguageSwitcherListButt
       </ListItemButton>
       <Collapse in={openCollapse} timeout="auto" unmountOnExit>
         <List>
-          {locales.map((locale, i) => (
-            <ListItemButton
+          {globalLocales.map((locale, i) => (
+            <TooltipOn
+              title={tCommon("languageNotAvailable")}
+              on={!availableLocales.includes(locale)}
               key={i}
-              onClick={() => handleLocaleChange(locale as D2gLocale)}
-              disabled={currentLocale === locale}
-              sx={{
-                backgroundColor:
-                  currentLocale === locale
-                    ? alpha(theme.palette["primary"].main, 0.1)
-                    : "transparent",
-              }}
             >
-              <ListItemText primary={tGlobal(locale)} />
-            </ListItemButton>
+              <ListItemButton
+                onClick={() => handleLocaleChange(locale as D2gLocale)}
+                disabled={
+                  currentLocale === locale || !availableLocales.includes(locale)
+                }
+                sx={{
+                  backgroundColor:
+                    currentLocale === locale
+                      ? alpha(theme.palette["primary"].main, 0.1)
+                      : "transparent",
+                  "&.Mui-disabled": {
+                    pointerEvents: "auto",
+                  },
+                }}
+              >
+                <ListItemText primary={tGlobal(locale)} />
+              </ListItemButton>
+            </TooltipOn>
           ))}
         </List>
       </Collapse>

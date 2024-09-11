@@ -1,15 +1,15 @@
-import PageLayout from "@/components/PageLayout";
 import { MainPage } from "@/components/MainPage";
-import { LanguageProvider } from "@/Providers/LanguageContext";
+import Head from 'next/head'
 
 const Home = () => {
-
   return (
-    <LanguageProvider>
-      <PageLayout>
-        <MainPage />
-      </PageLayout>
-    </LanguageProvider>
+    <>
+      <Head>
+        <title>Data2Graph</title>
+        <meta name='description' content='Check out all essential information about data2graph' />
+      </Head>
+      <MainPage />
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 {
   "actionButton": "Baixar",
-  "documentationButton": "Leia a documentação"
+  "documentationButton": "Leia a documentação",
+  "languageNotAvailable": "Este idioma não está disponível"
 }

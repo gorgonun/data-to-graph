@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-
 import * as React from "react";
 import { useI18n } from "@/hooks/useI18n";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,20 +10,21 @@ import { useTheme, alpha } from "@mui/material/styles";
 import { useLanguage } from "@/Providers/LanguageContext";
 import { D2gLocale } from "../../../i18n";
 import { getHref } from "./language-switcher-helper";
+import { TooltipOn } from "../TooltipOn";
 
 export function LanguageSwitcherButton() {
   const { t } = useI18n({ namespace: "main" });
   const { t: tGlobal } = useI18n({ namespace: "globalCommon" });
+  const { t: tCommon } = useI18n({ namespace: "common" });
+
   const router = useRouter();
   const theme = useTheme();
-  const { locales, currentLocale, setLocale } = useLanguage();
+  const { availableLocales, globalLocales, currentLocale, setLocale } =
+    useLanguage();
 
   const handleLocaleChange = (newLocale: D2gLocale) => {
     handleClose();
     setLocale?.(newLocale);
-
-    const href = getHref(newLocale, router);
-    router.push(href);
   };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -35,6 +35,10 @@ export function LanguageSwitcherButton() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (setLocale === undefined) {
+    return <></>;
+  }
 
   return (
     <Box>
@@ -78,21 +82,32 @@ export function LanguageSwitcherButton() {
           },
         }}
       >
-        {locales.map((locale, i) => (
-          <MenuItem
+        {globalLocales.map((locale, i) => (
+          <TooltipOn
+            title={tCommon("languageNotAvailable")}
+            on={!availableLocales.includes(locale)}
             key={i}
-            onClick={() => handleLocaleChange(locale as D2gLocale)}
-            disableRipple
-            sx={{
-              backgroundColor:
-                currentLocale === locale
-                  ? alpha(theme.palette["primary"].main, 0.1)
-                  : "transparent",
-            }}
-            disabled={currentLocale === locale}
+            placement="right"
           >
-            {tGlobal(locale)}
-          </MenuItem>
+            <MenuItem
+              onClick={() => handleLocaleChange(locale as D2gLocale)}
+              disableRipple
+              sx={{
+                backgroundColor:
+                  currentLocale === locale
+                    ? alpha(theme.palette["primary"].main, 0.1)
+                    : "transparent",
+                "&.Mui-disabled": {
+                  pointerEvents: "auto",
+                },
+              }}
+              disabled={
+                currentLocale === locale || !availableLocales.includes(locale)
+              }
+            >
+              {tGlobal(locale)}
+            </MenuItem>
+          </TooltipOn>
         ))}
       </Menu>
     </Box>
