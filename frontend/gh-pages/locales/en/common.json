@@ -1,5 +1,7 @@
 {
   "actionButton": "Download",
   "documentationButton": "Read the documentation",
-  "languageNotAvailable": "This language is not available"
+  "languageNotAvailable": "This language is not available",
+  "notFound": "Page not found",
+  "goToHome": "Go to the homepage"
 }

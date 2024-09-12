@@ -1,5 +1,7 @@
 {
   "actionButton": "Baixar",
   "documentationButton": "Leia a documentação",
-  "languageNotAvailable": "Este idioma não está disponível"
+  "languageNotAvailable": "Este idioma não está disponível",
+  "notFound": "Página não encontrada",
+  "goToHome": "Ir para a página inicial"
 }

@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import I18nProvider from "next-translate/I18nProvider";
-import { LanguageWrapper } from "@/wrappers/LanguageWrapper";
 import { i18nConfig } from "../../i18n";
 import { getLanguageFile } from "@/utils/language.util";
 import { Locale } from "@/types/i18n.type";
@@ -33,13 +32,11 @@ export const RootProvider = ({ children }: IRootProvider) => {
 
   return (
     <I18nProvider lang={currentLocale} namespaces={getLanguageFile(currentLocale)}>
-      <LanguageWrapper>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <div id="root">{children}</div>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
-      </LanguageWrapper>
+      <AppRouterCacheProvider>
+        <ThemeProvider theme={theme}>
+          <div id="root">{children}</div>
+        </ThemeProvider>
+      </AppRouterCacheProvider>
     </I18nProvider>
   );
 };

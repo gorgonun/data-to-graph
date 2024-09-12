@@ -145,7 +145,7 @@ export function MainPage() {
                 sx={{ width: { xs: "100%", md: "auto" } }}
                 onClick={() =>
                   router.push({
-                    pathname: "/[locale]/documentation/getting-started",
+                    pathname: "/documentation/getting-started",
                     query: router.query,
                   })
                 }
