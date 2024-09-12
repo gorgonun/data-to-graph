@@ -21,6 +21,7 @@ import { IconD2G } from "./appbar/icons/d2g-icon";
 import { useI18n } from "../hooks/useI18n";
 import Trans from "next-translate/Trans";
 import { RunTab } from "./RunTab";
+import { useRouter } from "next/router";
 
 type Message = Omit<MessageBlockProps, "title" | "message"> & {
   label: string;
@@ -91,6 +92,7 @@ export function MainPage() {
   const theme = useTheme();
   const { t } = useI18n({ namespace: "main" });
   const { t: tCommon } = useI18n({ namespace: "common" });
+  const router = useRouter();
 
   return (
     <Box>
@@ -141,6 +143,7 @@ export function MainPage() {
                 color="primary"
                 variant="contained"
                 sx={{ width: { xs: "100%", md: "auto" } }}
+                onClick={() => router.push("/documentation/getting-started")}
               >
                 {tCommon("actionButton")}
               </Button>

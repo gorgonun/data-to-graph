@@ -1,16 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { D2gLocale, i18nConfig } from "../../i18n";
 import { useRouter } from "next/router";
 import { languageDetector } from "@/helpers/languageDetector";
 
 export const LanguageContext = React.createContext<{
   currentLocale: D2gLocale;
-  locales: D2gLocale[];
+  availableLocales: D2gLocale[];
+  globalLocales: D2gLocale[];
   setLocale: ((newLocale: D2gLocale) => void) | undefined;
+  setAvailableLocales: ((newLocales: D2gLocale[]) => void) | undefined;
 }>({
   currentLocale: i18nConfig.defaultLocale,
-  locales: i18nConfig.locales,
+  availableLocales: i18nConfig.locales,
+  globalLocales: i18nConfig.locales,
   setLocale: undefined,
+  setAvailableLocales: undefined,
 });
 
 export const LanguageProvider = ({
@@ -19,6 +23,9 @@ export const LanguageProvider = ({
   children: React.ReactNode;
 }) => {
   const [lang, setLang] = React.useState(i18nConfig.defaultLocale);
+  const [availableLocales, setAvailableLocales] = React.useState(
+    i18nConfig.locales
+  );
   const router = useRouter();
 
   const handleLocaleChange = (newLocale: D2gLocale) => {
@@ -26,7 +33,7 @@ export const LanguageProvider = ({
     setLang(newLocale);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const detectedLng = (
       i18nConfig.locales.includes(router.query.locale as D2gLocale)
         ? String(router.query.locale)
@@ -40,8 +47,10 @@ export const LanguageProvider = ({
     <LanguageContext.Provider
       value={{
         currentLocale: lang,
-        locales: i18nConfig.locales,
+        availableLocales: availableLocales,
+        globalLocales: i18nConfig.locales,
         setLocale: handleLocaleChange,
+        setAvailableLocales,
       }}
     >
       {children}

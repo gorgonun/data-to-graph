@@ -17,7 +17,6 @@ export function RunTab() {
       <Tabs
         value={tab}
         onChange={handleChange}
-        aria-label="wrapped label tabs example"
         variant="fullWidth"
       >
         <Tab
@@ -31,6 +30,7 @@ export function RunTab() {
             },
           }}
           label={t("pages.home.runBlock.runWithDocker")}
+          wrapped
         />
         <Tab
           value={1}
@@ -42,6 +42,7 @@ export function RunTab() {
             },
           }}
           label={t("pages.home.runBlock.runWithDockerCompose")}
+          wrapped
         />
         <Tab
           value={2}
@@ -53,6 +54,7 @@ export function RunTab() {
             },
           }}
           label={t("pages.home.runBlock.manually")}
+          wrapped
         />
       </Tabs>
       {tab === 0 && (

@@ -1,8 +1,10 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { languageDetector } from "@/helpers/languageDetector";
-import { i18nConfig } from "../../i18n";
+import { D2gLocale, i18nConfig } from "../../i18n";
 import { Locale } from "@/types/i18n.type";
+import { pathsWithAllowedLanguages } from "@/paths-with-allowed-languages";
+import { useLanguage } from "@/Providers/LanguageContext";
 
 interface LanguageWrapperProps {
   children: ReactNode;
@@ -25,6 +27,7 @@ interface LanguageWrapperProps {
  */
 export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
   const [detectedLng, setDetectedLng] = useState("");
+  const { availableLocales, globalLocales, currentLocale, setAvailableLocales, setLocale } = useLanguage();
   const router = useRouter();
 
   // Check if current path includes locale
@@ -35,6 +38,18 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
       router.asPath.includes(detectedLng ?? i18nConfig.defaultLocale),
     [detectedLng, router.asPath, router.query.locale]
   );
+
+  const getAvailableLanguagesForPath = (path: string, locale?: string) => {
+    for (const { expression, allowedLanguages } of Object.values(
+      pathsWithAllowedLanguages
+    )) {
+      if (path.match(new RegExp(("/" + locale ?? "") + expression))) {
+        return allowedLanguages;
+      }
+    }
+
+    return globalLocales;
+  };
 
   // Set detected language
   useEffect(() => {
@@ -52,13 +67,36 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
       isReady,
     } = router;
 
+    // aspath will be /[locale]
+    if (!isReady) return;
+
+    const contextLocale =
+      typeof locale === "string" ? locale : asPath.split("/")[1];
+
+    const isValidLocale = i18nConfig.locales.includes(contextLocale as Locale);
+
+    const availableLanguagesForPath = getAvailableLanguagesForPath(
+      asPath,
+      contextLocale
+    );
+
+    setAvailableLocales?.(availableLanguagesForPath);
+
+    const localeInAllowedLanguages = contextLocale
+      ? availableLanguagesForPath.includes(contextLocale as D2gLocale)
+      : false;
+
     // Check if the current route has accurate locale
     if (
-      isReady &&
-      !i18nConfig.locales.includes(locale as Locale) &&
-      detectedLng
+      // isReady &&
+      !isValidLocale
     ) {
-      if (asPath.startsWith("/" + detectedLng) && router.route === "/404") {
+      // console.log({ availableLanguagesForPath, detectedLng})
+      const newLocale = availableLanguagesForPath.includes(currentLocale as D2gLocale)
+        ? currentLocale
+        : availableLocales[0];
+
+      if (asPath.startsWith("/" + newLocale) && router.route === "/404") {
         // router.push({
         //   pathname: "/404",
         //   query: { locale },
@@ -66,12 +104,20 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
         return;
       }
 
-      if (detectedLng && languageDetector.cache) {
-        languageDetector.cache(detectedLng);
-      }
-      router.replace("/" + detectedLng + asPath);
+      setLocale?.(newLocale as D2gLocale);
+      router.replace({ pathname: "/" + newLocale + asPath }, undefined, { locale: newLocale });
+    } else if (
+      !localeInAllowedLanguages &&
+      availableLanguagesForPath.length > 0
+    ) {
+      const newPath =
+        "/" +
+        availableLanguagesForPath[0] +
+        "/" +
+        asPath.slice(`/${contextLocale}/`.length, asPath.length);
+      router.replace({ pathname: newPath }, undefined);
     }
-  }, [router, detectedLng]);
+  }, [router, currentLocale, availableLocales]);
 
   return isLocaleInThePath ? <>{children}</> : <></>;
 };

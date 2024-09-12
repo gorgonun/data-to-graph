@@ -8,7 +8,7 @@ export default function Document(props: any) {
   return (
     <Html lang={currentLocale}>
       <Head>
-        <link rel="icon" type="image/svg+xml" href="images/icon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/images/icon.svg" />
       </Head>
       <body>
         <Main />
