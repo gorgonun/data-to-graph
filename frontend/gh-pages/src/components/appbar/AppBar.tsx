@@ -15,12 +15,14 @@ import { LanguageSwitcherButton } from "./LanguageSwitcherButton";
 import { D2GDrawer } from "./Drawer";
 import { useI18n } from "@/hooks/useI18n";
 import { useRouter } from "next/router";
+import { useLanguage } from "@/Providers/LanguageContext";
 
 export function D2GAppBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t } = useI18n({ namespace: "main" });
   const { t: tCommon } = useI18n({ namespace: "common" });
   const router = useRouter();
+  const { currentLocale } = useLanguage();
 
   return (
     <AppBar position="static">
@@ -52,8 +54,14 @@ export function D2GAppBar() {
                 justifyContent={{ xs: "center", md: "flex-start" }}
                 alignItems="center"
               >
-                <IconButton component={Link}  onClick={() => router.push('/')} disableFocusRipple disableRipple disableTouchRipple>
-                  <IconD2G sx={{ mr: { xs: 0, md: 1 }, color: 'white' }} />
+                <IconButton
+                  component={Link}
+                  onClick={() => router.push({ pathname: "/[locale]", query: { ...router.query, locale: currentLocale } })}
+                  disableFocusRipple
+                  disableRipple
+                  disableTouchRipple
+                >
+                  <IconD2G sx={{ mr: { xs: 0, md: 1 }, color: "white" }} />
                 </IconButton>
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
                   <LanguageSwitcherButton />
@@ -87,7 +95,12 @@ export function D2GAppBar() {
                     fontFamily: "oxygenMono",
                     width: "fit-content",
                   }}
-                  onClick={() => router.push("/documentation/getting-started")}
+                  onClick={() =>
+                    router.push({
+                      pathname: "/[locale]/documentation/getting-started",
+                      query: router.query,
+                    })
+                  }
                 >
                   {tCommon("actionButton")}
                 </Button>

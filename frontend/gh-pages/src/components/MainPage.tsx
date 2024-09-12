@@ -143,7 +143,12 @@ export function MainPage() {
                 color="primary"
                 variant="contained"
                 sx={{ width: { xs: "100%", md: "auto" } }}
-                onClick={() => router.push("/documentation/getting-started")}
+                onClick={() =>
+                  router.push({
+                    pathname: "/[locale]/documentation/getting-started",
+                    query: router.query,
+                  })
+                }
               >
                 {tCommon("actionButton")}
               </Button>
@@ -161,10 +166,10 @@ export function MainPage() {
           </Stack>
         </Stack>
       </Stack>
-      <Stack sx={{ backgroundColor: alpha('#9d8a54', 0.2)}}>
+      <Stack sx={{ backgroundColor: alpha("#9d8a54", 0.2) }}>
         <Stack width="100%" maxWidth="lg" mx="auto">
-          <Stack p={{xs: 2, md: 5}}>
-            <Typography>{t('pages.home.runBlock.title')}</Typography>
+          <Stack p={{ xs: 2, md: 5 }}>
+            <Typography>{t("pages.home.runBlock.title")}</Typography>
             <Box mt={2}>
               <RunTab />
             </Box>
