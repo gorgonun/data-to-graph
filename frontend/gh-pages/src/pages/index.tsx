@@ -1,8 +1,16 @@
-import { useRedirect } from "@/helpers/redirect";
+import { MainPage } from "@/components/MainPage";
+import Head from 'next/head'
 
-const Redirect = () => {
-  useRedirect();
-  return <></>;
+const Home = () => {
+  return (
+    <>
+      <Head>
+        <title>Data2Graph</title>
+        <meta name='description' content='Check out all essential information about data2graph' />
+      </Head>
+      <MainPage />
+    </>
+  );
 };
 
-export default Redirect;
+export default Home;

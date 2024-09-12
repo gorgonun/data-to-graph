@@ -56,7 +56,7 @@ export function D2GAppBar() {
               >
                 <IconButton
                   component={Link}
-                  onClick={() => router.push({ pathname: "/[locale]", query: { ...router.query, locale: currentLocale } })}
+                  onClick={() => router.push({ pathname: "/" })}
                   disableFocusRipple
                   disableRipple
                   disableTouchRipple
@@ -97,8 +97,7 @@ export function D2GAppBar() {
                   }}
                   onClick={() =>
                     router.push({
-                      pathname: "/[locale]/documentation/getting-started",
-                      query: router.query,
+                      pathname: "/documentation/getting-started",
                     })
                   }
                 >

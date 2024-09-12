@@ -22,7 +22,7 @@ export const LanguageProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [lang, setLang] = React.useState(i18nConfig.defaultLocale);
+  const [lang, setLang] = React.useState<null | D2gLocale>(null);
   const [availableLocales, setAvailableLocales] = React.useState(
     i18nConfig.locales
   );
@@ -42,14 +42,14 @@ export const LanguageProvider = ({
     
     const stringLocale = typeof locale === "string" ? locale : null;
 
-    if (!(stringLocale === lang)) {
+    if (!(stringLocale === lang) && lang) {
       router.replace(
         {
-          pathname: router.pathname === "/" ? "/[locale]/" : router.pathname,
+          pathname: router.pathname,
           query: { locale: lang },
         },
         undefined,
-        { locale: lang }
+        { locale: lang ?? i18nConfig.defaultLocale }
       );
     }
   }, [lang]);
@@ -64,10 +64,26 @@ export const LanguageProvider = ({
     setLang(detectedLng ?? i18nConfig.defaultLocale);
   }, []);
 
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const {
+      query: { locale },
+    } = router;
+
+    if (typeof locale === "string") {
+      if (locale !== lang && i18nConfig.locales.includes(locale as D2gLocale)) {
+        setLang(locale as D2gLocale);
+      } else if (!i18nConfig.locales.includes(locale as D2gLocale)) {
+        router.replace({ pathname: router.pathname, query: { locale: lang } }, undefined, { locale: lang ?? i18nConfig.defaultLocale });
+      }
+    }  
+  }, [router])
+
   return (
     <LanguageContext.Provider
       value={{
-        currentLocale: lang,
+        currentLocale: lang ?? i18nConfig.defaultLocale,
         availableLocales: availableLocales,
         globalLocales: i18nConfig.locales,
         setLocale: handleLocaleChange,
