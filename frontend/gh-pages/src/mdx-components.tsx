@@ -1,41 +1,66 @@
-import { Typography, Box } from '@mui/material'
-import type { MDXComponents } from 'mdx/types'
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import bash from 'react-syntax-highlighter/dist/cjs/languages/hljs/bash';
+import { Typography, Box } from "@mui/material";
+import type { MDXComponents } from "mdx/types";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import bash from "react-syntax-highlighter/dist/cjs/languages/hljs/bash";
 import "highlight.js/styles/github.css";
 
-SyntaxHighlighter.registerLanguage('bash', bash);
- 
+SyntaxHighlighter.registerLanguage("bash", bash);
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    h1: (_props) => (
-      <Typography variant="h3" gutterBottom />
+    h1: (props) => (
+      <Typography variant="h1" gutterBottom pb='0.3em' fontSize='2em' fontWeight={700} sx={{ borderBottom: '1px solid lightGray'}}>
+        {props.children}
+      </Typography>
     ),
-    h2: (_props) => (
-      <Typography variant="h4" gutterBottom />
+    h2: (props) => (
+      <Typography variant="h2" mb='0.75em' pb='0.3em' mt="1em" fontWeight={700} fontSize='1.5em' sx={{ borderBottom: '1px solid lightGray'}}>
+        {props.children}
+      </Typography>
     ),
-    h3: (_props) => (
-      <Typography variant="h5" gutterBottom />
+    h3: (props) => (
+      <Typography variant="h3" mb='0.75em' mt="1.2em" fontWeight={700} fontSize='1.25em'>
+        {props.children}
+      </Typography>
     ),
-    p: (_props) => (
-      <Typography variant="body1" paragraph />
+    h4: (props) => (
+      <Typography variant="h4" mb='0.75em' mt="1.2em" fontWeight={700} fontSize='1em'>
+        {props.children}
+      </Typography>
+    ),
+    p: (props) => (
+      <Typography variant="body1" component={"p"} fontSize='0.875em'>
+        {props.children}
+      </Typography>
     ),
     a: (props) => (
       <Typography
         component="a"
         href={props.href}
-        sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-      />
+        sx={{
+          color: "primary.main",
+          textDecoration: "none",
+          "&:hover": { textDecoration: "underline" },
+        }}
+      >
+        {props.children}
+      </Typography>
     ),
-    ul: (_props) => (
-      <Box component="ul" sx={{ paddingLeft: 2 }} />
+    ul: (props) => (
+      <Box component="ul" mb='1em' sx={{ paddingLeft: '2em' }}>
+        {props.children}
+      </Box>
     ),
-    ol: (_props) => (
-      <Box component="ol" sx={{ paddingLeft: 2 }} />
+    ol: (props) => (
+      <Box component="ol" sx={{ paddingLeft: 2 }}>
+        {props.children}
+      </Box>
     ),
-    li: (_props) => (
-      <Typography component="li" variant="body1" />
+    li: (props) => (
+      <Typography component="li" variant="body1">
+        {props.children}
+      </Typography>
     ),
     ...components,
-  }
+  };
 }

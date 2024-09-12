@@ -34,7 +34,6 @@ const withMDX = createMDX({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeHighlight]
   },
-  defaultLayout: true
 })
 
 export default withMDX(nextConfig);

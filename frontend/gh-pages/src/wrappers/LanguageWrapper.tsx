@@ -27,7 +27,13 @@ interface LanguageWrapperProps {
  */
 export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
   const [detectedLng, setDetectedLng] = useState("");
-  const { availableLocales, globalLocales, currentLocale, setAvailableLocales, setLocale } = useLanguage();
+  const {
+    availableLocales,
+    globalLocales,
+    currentLocale,
+    setAvailableLocales,
+    setLocale,
+  } = useLanguage();
   const router = useRouter();
 
   // Check if current path includes locale
@@ -70,8 +76,7 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
     // aspath will be /[locale]
     if (!isReady) return;
 
-    const contextLocale =
-      typeof locale === "string" ? locale : asPath.split("/")[1];
+    const contextLocale = typeof locale === "string" ? locale : undefined;
 
     const isValidLocale = i18nConfig.locales.includes(contextLocale as Locale);
 
@@ -81,6 +86,8 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
     );
 
     setAvailableLocales?.(availableLanguagesForPath);
+
+    const newPathName = router.pathname === '/' ? '/[locale]/' : router.pathname;
 
     const localeInAllowedLanguages = contextLocale
       ? availableLanguagesForPath.includes(contextLocale as D2gLocale)
@@ -92,7 +99,9 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
       !isValidLocale
     ) {
       // console.log({ availableLanguagesForPath, detectedLng})
-      const newLocale = availableLanguagesForPath.includes(currentLocale as D2gLocale)
+      const newLocale = availableLanguagesForPath.includes(
+        currentLocale as D2gLocale
+      )
         ? currentLocale
         : availableLocales[0];
 
@@ -105,17 +114,21 @@ export const LanguageWrapper = ({ children }: LanguageWrapperProps) => {
       }
 
       setLocale?.(newLocale as D2gLocale);
-      router.replace({ pathname: "/" + newLocale + asPath }, undefined, { locale: newLocale });
+      router.replace(
+        { pathname: newPathName, query: { locale: newLocale } },
+        undefined,
+        { locale: newLocale }
+      );
     } else if (
       !localeInAllowedLanguages &&
       availableLanguagesForPath.length > 0
     ) {
-      const newPath =
-        "/" +
-        availableLanguagesForPath[0] +
-        "/" +
-        asPath.slice(`/${contextLocale}/`.length, asPath.length);
-      router.replace({ pathname: newPath }, undefined);
+      const newPath = "/[locale]/" + newPathName.replace("/[locale]/", "");
+      router.replace(
+        { pathname: newPath, query: { locale: availableLanguagesForPath[0] } },
+        undefined,
+        { locale: availableLanguagesForPath[0] }
+      );
     }
   }, [router, currentLocale, availableLocales]);
 

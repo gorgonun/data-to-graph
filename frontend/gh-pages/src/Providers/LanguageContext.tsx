@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { D2gLocale, i18nConfig } from "../../i18n";
 import { useRouter } from "next/router";
 import { languageDetector } from "@/helpers/languageDetector";
@@ -33,7 +33,28 @@ export const LanguageProvider = ({
     setLang(newLocale);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const {
+      query: { locale },
+    } = router;
+    
+    const stringLocale = typeof locale === "string" ? locale : null;
+
+    if (!(stringLocale === lang)) {
+      router.replace(
+        {
+          pathname: router.pathname === "/" ? "/[locale]/" : router.pathname,
+          query: { locale: lang },
+        },
+        undefined,
+        { locale: lang }
+      );
+    }
+  }, [lang]);
+
+  useEffect(() => {
     const detectedLng = (
       i18nConfig.locales.includes(router.query.locale as D2gLocale)
         ? String(router.query.locale)
@@ -41,7 +62,7 @@ export const LanguageProvider = ({
     ) as D2gLocale | undefined;
 
     setLang(detectedLng ?? i18nConfig.defaultLocale);
-  }, [router.query.locale]);
+  }, []);
 
   return (
     <LanguageContext.Provider
