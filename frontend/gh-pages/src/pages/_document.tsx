@@ -1,6 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
 import { i18nConfig } from "../../i18n";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 export default function Document(props: any) {
   const currentLocale =
@@ -10,9 +9,7 @@ export default function Document(props: any) {
     <Html lang={currentLocale}>
       <Head>
         <link rel="icon" type="image/svg+xml" href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/images/icon.svg`} />
-        { process.env.NEXT_PUBLIC_GA_ID && (
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-          )}
+        <meta name="google-site-verification" content="JU7c8voS3f2z60mQQBBjoyHgR2Vw4B5FDYxuTKDZm0c" />
       </Head>
       <body>
         <Main />
