@@ -58,6 +58,7 @@ export function ResourceBlock({
         ml: greaterThanSm ? (direction === "left" ? 0 : 3) : 0,
         mr: greaterThanSm ? (direction === "right" ? 3 : 0) : 0,
       }}
+      loading="lazy"
     />
   );
 
