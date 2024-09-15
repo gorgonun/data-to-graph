@@ -80,7 +80,7 @@ export const LanguageProvider = ({
     }
     
     // I could find no other way to change the lang tag in HTML with export.
-    document.documentElement.setAttribute("lang", lang);
+    document.documentElement.setAttribute("lang", lang ?? i18nConfig.defaultLocale);
   }, [lang]);
 
   useLayoutEffect(() => {
