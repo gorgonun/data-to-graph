@@ -24,17 +24,20 @@ interface IRootProvider extends PropsWithChildren {}
  */
 export const RootProvider = ({ children }: IRootProvider) => {
   const router = useRouter();
-  const { currentLocale } = useLanguage();
+  const { currentLocale, languageContextIsReady } = useLanguage();
 
   const lang = i18nConfig.locales.includes(router.query.locale as Locale)
     ? (router.query.locale as Locale)
     : i18nConfig.defaultLocale;
 
   return (
-    <I18nProvider lang={currentLocale} namespaces={getLanguageFile(currentLocale)}>
+    <I18nProvider
+      lang={currentLocale}
+      namespaces={getLanguageFile(currentLocale)}
+    >
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
-          <div id="root">{children}</div>
+          {languageContextIsReady && <div id="root">{children}</div>}
         </ThemeProvider>
       </AppRouterCacheProvider>
     </I18nProvider>

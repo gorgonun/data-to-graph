@@ -27,72 +27,73 @@ type Message = Omit<MessageBlockProps, "title" | "message"> & {
   label: string;
 };
 
-const messages: Message[] = [
-  {
-    label: "automaticMigration",
-    icon: "spa",
-  },
-  {
-    label: "streaming",
-    icon: "directionsBoat",
-  },
-  {
-    label: "metricsVisualization",
-    icon: "barChart",
-  },
-  {
-    label: "scale",
-    icon: "insights",
-  },
-];
-
-const resourceBlocks: (Omit<
-  ResourceBlockProps,
-  "direction" | "title" | "message"
-> & { label: string })[] = [
-  {
-    label: "automaticMigration",
-    image: JsonDataExample,
-    alt: "Exemplo de dados JSON.",
-    size: "small",
-  },
-  {
-    label: "jsonToGraph",
-    image: MigratedDataExample,
-    alt: "Exemplo de Migração de dados.",
-    size: "small",
-  },
-  {
-    label: "aggregatedMetrics",
-    image: MetricsAggregated,
-    alt: "Métricas agregadas de desempenho.",
-    size: "medium",
-  },
-  {
-    label: "realTimeMetrics",
-    image: MetricsRealTime,
-    alt: "Métricas em tempo real.",
-    size: "large",
-  },
-  {
-    label: "streamingTurboC2",
-    image: StreamingFromTurboC2,
-    alt: "Streaming a partir do Turbo C2.",
-    size: "small",
-  },
-  {
-    label: "databaseConnection",
-    image: DatabaseConnectionScreen,
-    alt: "Tela de conexão com banco de dados.",
-    size: "xlarge",
-  },
-];
-
 export function MainPage() {
   const theme = useTheme();
   const { t } = useI18n({ namespace: "main" });
   const { t: tCommon } = useI18n({ namespace: "common" });
   const router = useRouter();
+
+  
+  const messages: Message[] = [
+    {
+      label: "automaticMigration",
+      icon: "spa",
+    },
+    {
+      label: "streaming",
+      icon: "directionsBoat",
+    },
+    {
+      label: "metricsVisualization",
+      icon: "barChart",
+    },
+    {
+      label: "scale",
+      icon: "insights",
+    },
+  ];
+  
+  const resourceBlocks: (Omit<
+    ResourceBlockProps,
+    "direction" | "title" | "message"
+  > & { label: string })[] = [
+    {
+      label: "automaticMigration",
+      image: JsonDataExample,
+      alt: "Exemplo de dados JSON.",
+      size: "small",
+    },
+    {
+      label: "jsonToGraph",
+      image: MigratedDataExample,
+      alt: "Exemplo de Migração de dados.",
+      size: "small",
+    },
+    {
+      label: "aggregatedMetrics",
+      image: MetricsAggregated,
+      alt: "Métricas agregadas de desempenho.",
+      size: "medium",
+    },
+    {
+      label: "realTimeMetrics",
+      image: MetricsRealTime,
+      alt: "Métricas em tempo real.",
+      size: "large",
+    },
+    {
+      label: "streamingTurboC2",
+      image: StreamingFromTurboC2,
+      alt: "Streaming a partir do Turbo C2.",
+      size: "small",
+    },
+    {
+      label: "databaseConnection",
+      image: DatabaseConnectionScreen,
+      alt: "Tela de conexão com banco de dados.",
+      size: "xlarge",
+    },
+  ];
 
   return (
     <Box>
