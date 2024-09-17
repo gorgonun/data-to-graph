@@ -2,12 +2,12 @@ import { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import I18nProvider from "next-translate/I18nProvider";
 import { i18nConfig } from "../../i18n";
-import { getLanguageFile } from "@/utils/language.util";
 import { Locale } from "@/types/i18n.type";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../theme";
-import { LanguageProvider, useLanguage } from "./LanguageContext";
+import { useLanguage } from "./LanguageContext";
+import { getLanguageFile } from "@/libs/language";
 
 interface IRootProvider extends PropsWithChildren {}
 

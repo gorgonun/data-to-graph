@@ -1,6 +1,9 @@
 import createMDX from '@next/mdx'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import remarkFrontmatter from "remark-frontmatter";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -31,8 +34,18 @@ const nextConfig = {
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeHighlight]
+    remarkPlugins: [remarkGfm, remarkFrontmatter],
+    rehypePlugins: [rehypeHighlight, rehypeSlug, [
+      rehypeAutolinkHeadings,
+      {
+          behaviour: 'before',
+          properties: {
+              tabIndex: -1,
+              className: 'hash-link',
+              ariaHidden: true,
+          },
+      }
+  ]]
   },
 })
 
