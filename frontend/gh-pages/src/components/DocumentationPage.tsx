@@ -30,6 +30,8 @@ export default function DocumentationPage({
           href: `/documentation/${name}`,
         }))
       );
+
+      return () => setExtraItems([]);
     } else {
       setExtraItems([]);
     }
