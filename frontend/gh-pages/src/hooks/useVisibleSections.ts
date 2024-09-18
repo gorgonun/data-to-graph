@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 
 export const useVisibleSections = (sectionIds: string[]) => {
-  const [visibleSection, setVisibleSection] = useState<string[] | null>(null);
+  const [visibleSection, setVisibleSection] = useState<string[]>([]);
 
   useEffect(() => {
-    const handleObserver = (entries) => {
+    const handleObserver: IntersectionObserverCallback = (entries) => {
+      const newVisibleSections: string[] = [];
+
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setVisibleSection(entry.target.id);
+          newVisibleSections.push(entry.target.id);
         }
       });
+      setVisibleSection(newVisibleSections);
     };
 
     const observer = new IntersectionObserver(handleObserver, {

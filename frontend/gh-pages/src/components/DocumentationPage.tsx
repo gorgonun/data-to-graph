@@ -50,11 +50,26 @@ export default function DocumentationPage({ children, pages }: Props) {
     setHeadingInfo(headingInfo);
   }, []);
 
+  const getFontStyle = (id: string) => {
+    if (visibleHeadings?.length > 0) {
+      const index = visibleHeadings.indexOf(id);
+      if (index < 0) {
+        return { fontWeight: 0, color: "gray" };
+      } else if (index === 0) {
+        return { fontWeight: 700 };
+      }
+
+      return { fontWeight: 0 };
+    }
+
+    return { fontWeight: 0, color: "gray"  };
+  };
+
   return (
     <Stack sx={{ width: "100%", maxWidth: "lg", mx: "auto" }}>
       <Grid width="100%" container mt={5}>
         <Grid item xs={2}>
-          <Stack position='sticky' top={10}>
+          <Stack position="sticky" top={10}>
             <DocsNavBar pages={pages.map((p) => ({ name: p }))} />
           </Stack>
         </Grid>
@@ -71,17 +86,33 @@ export default function DocumentationPage({ children, pages }: Props) {
           {children}
         </Grid>
         <Grid item xs={3}>
-          <Stack ml={2} position='sticky' top={10}>
+          <Stack ml={2} position="sticky" top={10}>
             <Typography>On this page</Typography>
-            {headingInfo.map((heading) => (
-              <Stack key={heading.id} spacing={1} ml={(heading.level - 1) * 2}>
-                <Link href={`#${heading.id}`} style={{ textDecoration: 'none' }}>
-                <Typography fontSize='0.7em' color='black' fontWeight={visibleHeadings?.includes(heading.id) ? 700 : 0}>
-                  {heading.text}
-                </Typography>
-                </Link>
-              </Stack>
-            ))}
+            {headingInfo.map((heading) => {
+              const fontStyle = getFontStyle(heading.id);
+
+              return (
+                <Stack
+                  key={heading.id}
+                  spacing={1}
+                  ml={(heading.level - 1) * 2}
+                >
+                  <Link
+                    href={`#${heading.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Typography
+                      fontSize="0.7em"
+                      color="black"
+                      fontWeight={fontStyle.fontWeight}
+                      style={{ color: fontStyle.color ?? 'black' }}
+                    >
+                      {heading.text}
+                    </Typography>
+                  </Link>
+                </Stack>
+              );
+            })}
           </Stack>
         </Grid>
       </Grid>
