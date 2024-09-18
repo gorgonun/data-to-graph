@@ -5,14 +5,22 @@ import bash from "react-syntax-highlighter/dist/cjs/languages/hljs/bash";
 import "highlight.js/styles/github.css";
 import Link from "next/link";
 
-
 SyntaxHighlighter.registerLanguage("bash", bash);
 
 const headerWithAnchor = (headerProps: TypographyProps, id: string) => {
   return (
-    <Stack direction="row" flexWrap='wrap' sx={{ ":hover": { ".link-icon": { opacity: 1 } } }}>
+    <Stack
+      direction="row"
+      flexWrap="wrap"
+      sx={{ ":hover": { ".link-icon": { opacity: 1 } } }}
+    >
       <Typography {...headerProps} id={id} />
-      <Box ml={1} className="link-icon" sx={{ opacity: 0 }}>
+      <Box
+        ml={1}
+        className="link-icon"
+        sx={{ opacity: 0 }}
+        display={{ xs: "none", md: "block" }}
+      >
         <Link href={`#${id}`} style={{ textDecoration: "none" }}>
           <Typography
             variant={headerProps.variant}
@@ -31,22 +39,55 @@ const headerWithAnchor = (headerProps: TypographyProps, id: string) => {
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    h1: ({ id, ...rest }) => (
-      // @ts-ignore
-      headerWithAnchor({ ...rest, variant: "h1", pb: "0.3em", fontSize: "2em", fontWeight: 700 }, id)
-    ),
-    h2: ({ id, ...rest }) => (
-      // @ts-ignore
-      headerWithAnchor({ ...rest, variant: "h2", pb: "0.3em", mt: "1em", fontSize: "1.5em", fontWeight: 700 }, id)
-    ),
-    h3: ({ id, ...rest }) => (
-      // @ts-ignore
-      headerWithAnchor({ ...rest, variant: "h3", mt: "1.2em", fontSize: "1.25em", fontWeight: 700 }, id)
-    ),
-    h4: ({ id, ...rest }) => (
-      // @ts-ignore
-      headerWithAnchor({ ...rest, variant: "h4", mt: "1.2em", fontSize: "1em", fontWeight: 700 }, id)
-    ),
+    h1: ({ id, ...rest }) =>
+      headerWithAnchor(
+        // @ts-ignore
+        {
+          ...rest,
+          variant: "h1",
+          pb: "0.3em",
+          fontSize: "2em",
+          fontWeight: 700,
+        },
+        id
+      ),
+    h2: ({ id, ...rest }) =>
+      headerWithAnchor(
+        // @ts-ignore
+        {
+          ...rest,
+          variant: "h2",
+          pb: "0.3em",
+          mt: "1em",
+          fontSize: "1.5em",
+          fontWeight: 700,
+        },
+        id
+      ),
+    h3: ({ id, ...rest }) =>
+      headerWithAnchor(
+        // @ts-ignore
+        {
+          ...rest,
+          variant: "h3",
+          mt: "1.2em",
+          fontSize: "1.25em",
+          fontWeight: 700,
+        },
+        id
+      ),
+    h4: ({ id, ...rest }) =>
+      headerWithAnchor(
+        // @ts-ignore
+        {
+          ...rest,
+          variant: "h4",
+          mt: "1.2em",
+          fontSize: "1em",
+          fontWeight: 700,
+        },
+        id
+      ),
     p: (props) => (
       // @ts-ignore
       <Typography variant="body1" component={"p"} fontSize="0.875em" {...props}>

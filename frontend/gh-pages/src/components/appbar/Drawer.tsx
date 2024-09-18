@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import {
+  Divider,
   Drawer,
   List,
   ListItem,
@@ -8,9 +9,9 @@ import {
 } from "@mui/material";
 import { pages } from "../pages";
 
-import * as React from "react";
 import { useI18n } from "@/hooks/useI18n";
 import { LanguageSwitcherListButton } from "./LanguageSwitcherListButton";
+import { useDrawer } from "@/Providers/DrawerContext";
 
 interface D2GDrawerProps {
   open: boolean;
@@ -22,6 +23,7 @@ export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
     setOpen(newOpen);
   };
   const { t } = useI18n({ namespace: "main" });
+  const { extraItems } = useDrawer();
 
   const DrawerList = (
     <Box
@@ -37,6 +39,14 @@ export function D2GDrawer({ open, setOpen }: D2GDrawerProps) {
           </ListItem>
         ))}
         <LanguageSwitcherListButton onClose={() => toggleDrawer(false)} />
+          <Divider />
+        {extraItems.map(({ label, href }, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton LinkComponent={"a"} href={href}>
+              <ListItemText primary={label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );

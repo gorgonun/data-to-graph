@@ -16,6 +16,7 @@
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@mui/icons-material": "^6.0.0",
+    "@mui/material": "^6.1.0",
     "@mui/material-nextjs": "^6.0.0",
     "@next/mdx": "^14.2.9",
     "@next/third-parties": "^14.2.9",

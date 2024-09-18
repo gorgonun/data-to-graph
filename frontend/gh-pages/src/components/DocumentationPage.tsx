@@ -1,81 +1,55 @@
-import { Stack, Grid, Typography } from "@mui/material";
-import React from "react";
+import { Stack, Grid, useMediaQuery, Theme } from "@mui/material";
 import { ReactNode } from "react";
 import DocsNavBar from "./DocsNavBar";
-import Link from "next/link";
-import { useVisibleSections } from "@/hooks/useVisibleSections";
+import DocumentationTOC from "./DocumentationTOC";
+import { useDrawer } from "@/Providers/DrawerContext";
+import React from "react";
+import { kebabCaseToText, kebabToMenuCase } from "@/helpers/helpers";
 
 type Props = {
   children?: ReactNode;
   pages: string[];
+  currentPageId: string;
 };
 
-export default function DocumentationPage({ children, pages }: Props) {
-  const scrolledRef = React.useRef(false);
-  const [headingInfo, setHeadingInfo] = React.useState<
-    { id: string; tagName: string; text: string | null; level: number }[]
-  >([]);
-  const visibleHeadings = useVisibleSections(headingInfo.map((h) => h.id));
+export default function DocumentationPage({
+  children,
+  pages,
+  currentPageId,
+}: Props) {
+  const { setExtraItems } = useDrawer();
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
 
   React.useEffect(() => {
-    const hash = window.location.hash;
-
-    if (hash && !scrolledRef.current) {
-      const id = hash.replace("#", "");
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-        scrolledRef.current = true;
-      }
+    if (isMobile) {
+      setExtraItems(
+        pages.map((name) => ({
+          label: kebabToMenuCase(name),
+          href: `/documentation/${name}`,
+        }))
+      );
+    } else {
+      setExtraItems([]);
     }
-  }, []);
-
-  React.useEffect(() => {
-    const headings = Array.from(
-      document.querySelectorAll("h1, h2, h3, h4, h5, h6")
-    );
-    const headingInfo = [];
-
-    for (const heading of headings) {
-      const id = heading.id;
-      const tagName = heading.tagName;
-      const text = heading.textContent;
-      const level = parseInt(tagName.replace("H", ""), 10);
-
-      if (text !== "#") {
-        headingInfo.push({ id, tagName, text, level });
-      }
-    }
-
-    setHeadingInfo(headingInfo);
-  }, []);
-
-  const getFontStyle = (id: string) => {
-    if (visibleHeadings?.length > 0) {
-      const index = visibleHeadings.indexOf(id);
-      if (index < 0) {
-        return { fontWeight: 0, color: "gray" };
-      } else if (index === 0) {
-        return { fontWeight: 700 };
-      }
-
-      return { fontWeight: 0 };
-    }
-
-    return { fontWeight: 0, color: "gray"  };
-  };
+  }, [isMobile, pages, setExtraItems]);
 
   return (
     <Stack sx={{ width: "100%", maxWidth: "lg", mx: "auto" }}>
-      <Grid width="100%" container mt={5}>
-        <Grid item xs={2}>
-          <Stack position="sticky" top={10}>
-            <DocsNavBar pages={pages.map((p) => ({ name: p }))} />
+      <Grid width="100%" container mt={{ xs: 2, md: 5 }}>
+        <Grid item md={2} xs={0} display={{ xs: "none", md: "block" }}>
+          <Stack position="sticky" top={{ xs: 0, md: 10 }} p={2}>
+            <DocsNavBar
+              pages={pages.map((p) => ({ name: kebabCaseToText(p), id: p }))}
+              currentPageId={currentPageId}
+            />
           </Stack>
         </Grid>
         <Grid
           item
-          xs={7}
+          xs={12}
+          md={7}
           sx={{
             ".hljs": {
               maxWidth: "100%",
@@ -83,36 +57,16 @@ export default function DocumentationPage({ children, pages }: Props) {
             },
           }}
         >
-          {children}
+          <Stack p={2}>
+            <Stack display={{ xs: "block", md: "none" }}>
+              <DocumentationTOC variant="minimal" />
+            </Stack>
+            <Stack mt={{ xs: 2, md: 0 }}>{children}</Stack>
+          </Stack>
         </Grid>
-        <Grid item xs={3}>
-          <Stack ml={2} position="sticky" top={10}>
-            <Typography>On this page</Typography>
-            {headingInfo.map((heading) => {
-              const fontStyle = getFontStyle(heading.id);
-
-              return (
-                <Stack
-                  key={heading.id}
-                  spacing={1}
-                  ml={(heading.level - 1) * 2}
-                >
-                  <Link
-                    href={`#${heading.id}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Typography
-                      fontSize="0.7em"
-                      color="black"
-                      fontWeight={fontStyle.fontWeight}
-                      style={{ color: fontStyle.color ?? 'black' }}
-                    >
-                      {heading.text}
-                    </Typography>
-                  </Link>
-                </Stack>
-              );
-            })}
+        <Grid item xs={0} md={3} display={{ xs: "none", md: "block" }}>
+          <Stack ml={2} p={2} position="sticky" top={10}>
+            <DocumentationTOC />
           </Stack>
         </Grid>
       </Grid>

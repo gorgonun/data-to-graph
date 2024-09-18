@@ -52,7 +52,7 @@ const Documentation = ({ postData, pages }: Props) => {
 
   return (
     <Suspense key={postData.id}>
-      <DocumentationPage pages={pages}>
+      <DocumentationPage pages={pages} currentPageId={postData.id}>
         <Mdx />
       </DocumentationPage>
     </Suspense>
