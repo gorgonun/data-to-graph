@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo } from "react";
+import React, { PropsWithChildren, useEffect, useMemo } from "react";
 import { D2gLocale, i18nConfig } from "../../i18n";
 import { useRouter } from "next/router";
 import { languageDetector } from "@/helpers/languageDetector";
@@ -26,11 +26,7 @@ export const LanguageContext = React.createContext<{
   setAvailableLocales: undefined,
 });
 
-export const LanguageProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export default function LanguageProvider({ children }: PropsWithChildren) {
   const [lang, setLang] = React.useState<null | D2gLocale>(null);
   const [availableLocales, setAvailableLocales] = React.useState(
     i18nConfig.locales
@@ -71,7 +67,7 @@ export const LanguageProvider = ({
       router.replace(
         {
           pathname: router.pathname,
-          query: { locale: lang },
+          query: { locale: lang, ...router.query },
         },
         undefined,
         { locale: lang ?? i18nConfig.defaultLocale }
@@ -83,7 +79,7 @@ export const LanguageProvider = ({
     document.documentElement.setAttribute("lang", lang ?? i18nConfig.defaultLocale);
   }, [lang]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const detectedLng = (
       i18nConfig.locales.includes(router.query.locale as D2gLocale)
         ? String(router.query.locale)
@@ -94,7 +90,7 @@ export const LanguageProvider = ({
     setLanguageWasDetected(true);
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!router.isReady) return;
 
     const {
@@ -108,7 +104,7 @@ export const LanguageProvider = ({
         return;
       } else if (!i18nConfig.locales.includes(locale as D2gLocale)) {
         router.replace(
-          { pathname: router.pathname, query: { locale: lang } },
+          { pathname: router.pathname, query: { locale: lang, ...router.query } },
           undefined,
           { locale: lang ?? i18nConfig.defaultLocale }
         );

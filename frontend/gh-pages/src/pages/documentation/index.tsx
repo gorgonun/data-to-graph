@@ -1,13 +1,7 @@
-import PageLayout from "@/components/PageLayout";
-import { MainPage } from "@/components/MainPage";
-import { LanguageProvider } from "@/Providers/LanguageContext";
-import type { MDXComponents } from 'mdx/types'
+import { useRouter } from "next/router";
 
-const Documentation = () => {
-
-  return (
-      <div></div>
-  );
-};
-
-export default Documentation;
+export default function Home() {
+    const router = useRouter();
+    router.push("/documentation/introduction");
+    return null;
+}

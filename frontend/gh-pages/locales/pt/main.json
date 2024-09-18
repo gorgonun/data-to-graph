@@ -66,6 +66,9 @@
     },
     "about": {
       "title": "Sobre"
+    },
+    "gitHub": {
+      "title": "GitHub"
     }
   }
 }
