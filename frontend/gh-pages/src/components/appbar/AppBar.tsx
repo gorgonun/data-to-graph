@@ -6,23 +6,21 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Grid, Stack, Link } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { IconD2G } from "./icons/d2g-icon";
 import { pages } from "../pages";
 
-import * as React from "react";
 import { LanguageSwitcherButton } from "./LanguageSwitcherButton";
 import { D2GDrawer } from "./Drawer";
 import { useI18n } from "@/hooks/useI18n";
 import { useRouter } from "next/router";
 import { useLanguage } from "@/Providers/LanguageContext";
+import Link from "next/link";
 
 export function D2GAppBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { t } = useI18n({ namespace: "main" });
   const { t: tCommon } = useI18n({ namespace: "common" });
-  const router = useRouter();
-  const { currentLocale } = useLanguage();
 
   return (
     <AppBar position="static">
@@ -56,7 +54,7 @@ export function D2GAppBar() {
               >
                 <IconButton
                   component={Link}
-                  onClick={() => router.push({ pathname: "/" })}
+                  href="/"
                   disableFocusRipple
                   disableRipple
                   disableTouchRipple
@@ -65,7 +63,7 @@ export function D2GAppBar() {
                 </IconButton>
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
                   <LanguageSwitcherButton />
-                  {pages.map(({ label, href }) => (
+                  {pages.map(({ label, href, target }) => (
                     <Button
                       key={label}
                       LinkComponent={"a"}
@@ -74,6 +72,7 @@ export function D2GAppBar() {
                         setDrawerOpen(false);
                       }}
                       sx={{ color: "white" }}
+                      target={target}
                     >
                       {t(`pages.${label}.title`)}
                     </Button>
@@ -95,11 +94,8 @@ export function D2GAppBar() {
                     fontFamily: "oxygenMono",
                     width: "fit-content",
                   }}
-                  onClick={() =>
-                    router.push({
-                      pathname: "/documentation/getting-started",
-                    })
-                  }
+                  component={Link}
+                  href="/documentation/getting-started"
                 >
                   {tCommon("actionButton")}
                 </Button>

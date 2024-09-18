@@ -21,7 +21,7 @@ import { IconD2G } from "./appbar/icons/d2g-icon";
 import { useI18n } from "../hooks/useI18n";
 import Trans from "next-translate/Trans";
 import { RunTab } from "./RunTab";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Message = Omit<MessageBlockProps, "title" | "message"> & {
   label: string;
@@ -31,7 +31,6 @@ export function MainPage() {
   const theme = useTheme();
   const { t } = useI18n({ namespace: "main" });
   const { t: tCommon } = useI18n({ namespace: "common" });
-  const router = useRouter();
 
   
   const messages: Message[] = [
@@ -144,12 +143,8 @@ export function MainPage() {
                 color="primary"
                 variant="contained"
                 sx={{ width: { xs: "100%", md: "auto" } }}
-                onClick={() =>
-                  router.push({
-                    pathname: "/documentation/getting-started",
-                    query: router.query,
-                  })
-                }
+                component={Link}
+                href="/documentation/getting-started"
               >
                 {tCommon("actionButton")}
               </Button>
@@ -160,6 +155,8 @@ export function MainPage() {
                 startIcon={<ArticleIcon />}
                 variant="outlined"
                 sx={{ width: { xs: "100%", md: "auto" } }}
+                component={Link}
+                href="/documentation/introduction"
               >
                 {tCommon("documentationButton")}
               </Button>
@@ -274,12 +271,13 @@ export function MainPage() {
               </Stack>
             </Stack>
             <Stack>
-              {pages.map(({ label, href }, index) => (
+              {pages.map(({ label, href, target }, index) => (
                 <Button
                   key={index}
                   LinkComponent={"a"}
                   href={href}
                   sx={{ color: theme.palette["primary"].contrastText }}
+                  target={target}
                 >
                   {t(`pages.${label}.title`)}
                 </Button>
