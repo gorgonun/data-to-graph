@@ -67,7 +67,7 @@ export default function LanguageProvider({ children }: PropsWithChildren) {
       router.replace(
         {
           pathname: router.pathname,
-          query: { locale: lang, ...router.query },
+          query: { ...router.query, locale: lang },
         },
         undefined,
         { locale: lang ?? i18nConfig.defaultLocale }
@@ -104,7 +104,7 @@ export default function LanguageProvider({ children }: PropsWithChildren) {
         return;
       } else if (!i18nConfig.locales.includes(locale as D2gLocale)) {
         router.replace(
-          { pathname: router.pathname, query: { locale: lang, ...router.query } },
+          { pathname: router.pathname, query: { ...router.query, locale: lang } },
           undefined,
           { locale: lang ?? i18nConfig.defaultLocale }
         );
