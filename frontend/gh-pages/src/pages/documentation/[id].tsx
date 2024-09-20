@@ -1,20 +1,22 @@
-import { getAllPostIds, getPostData } from "@/libs/content";
+import {
+  DocumentationFontmatter,
+  getAllDocumentationPostIds,
+  getDocumentationPostData,
+} from "@/libs/content";
 import { GetStaticPropsContext } from "next";
 import DocumentationPage from "@/components/DocumentationPage";
 import { lazy, Suspense } from "react";
-import dynamic from "next/dynamic";
 
 interface Props {
   postData: {
     id: string;
     filename: string;
-    order: number;
-  };
+  } & DocumentationFontmatter;
   pages: string[];
 }
 
 export async function getStaticPaths() {
-  const paths = await getAllPostIds();
+  const paths = await getAllDocumentationPostIds();
 
   return {
     paths: paths.map((id) => ({
@@ -31,9 +33,9 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     throw new Error("Invalid post id");
   }
 
-  const postData = getPostData(params?.id);
-  const pages = (await getAllPostIds())
-    .map((id) => getPostData(id))
+  const postData = getDocumentationPostData(params?.id);
+  const pages = (await getAllDocumentationPostIds())
+    .map((id) => getDocumentationPostData(id))
     .sort((a, b) => a.order - b.order)
     .map((p) => p.id);
 

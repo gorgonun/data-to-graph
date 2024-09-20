@@ -5,4 +5,8 @@ export const pathsWithAllowedLanguages = {
     allowedLanguages: [D2gLocale.en],
     expression: "/documentation(/)?.*",
   },
+  blog: {
+    allowedLanguages: [D2gLocale.en],
+    expression: "/blog(/)?.*",
+  },
 };

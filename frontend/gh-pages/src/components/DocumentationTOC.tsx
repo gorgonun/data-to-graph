@@ -7,10 +7,14 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 interface DocumentationTOCProps {
   variant?: "default" | "minimal";
+  indentationIndicator?: string;
+  skipFirsts?: number;
 }
 
 export default function DocumentationTOC({
   variant = "default",
+  indentationIndicator,
+  skipFirsts,
 }: DocumentationTOCProps) {
   const scrolledRef = React.useRef(false);
   const [headingInfo, setHeadingInfo] = React.useState<
@@ -49,7 +53,7 @@ export default function DocumentationTOC({
       }
     }
 
-    setHeadingInfo(headingInfo);
+    setHeadingInfo(headingInfo.slice(skipFirsts));
   }, []);
 
   const getFontStyle = (id: string) => {
@@ -86,11 +90,19 @@ export default function DocumentationTOC({
       </Stack>
       <Stack>
         {variant !== "minimal" || isOpen ? (
-          headingInfo.map((heading) => {
+          headingInfo.map((heading, index) => {
             const fontStyle = getFontStyle(heading.id);
 
             return (
-              <Stack key={heading.id} spacing={1} ml={(heading.level - 1) * 2}>
+              <Stack
+                key={heading.id}
+                spacing={1}
+                ml={
+                  (indentationIndicator ?? "margin") === "margin"
+                    ? (heading.level - 1) * 2
+                    : 0
+                }
+              >
                 <Link
                   href={`#${heading.id}`}
                   style={{ textDecoration: "none" }}
@@ -101,6 +113,10 @@ export default function DocumentationTOC({
                     fontWeight={fontStyle.fontWeight}
                     style={{ color: fontStyle.color ?? "black" }}
                   >
+                    {indentationIndicator != null &&
+                    indentationIndicator != "margin"
+                      ? indentationIndicator.repeat(index)
+                      : ""}
                     {heading.text}
                   </Typography>
                 </Link>
