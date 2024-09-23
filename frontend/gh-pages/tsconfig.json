@@ -21,6 +21,6 @@
       "mdx"
      ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/sitemap.mjs"],
   "exclude": ["node_modules"]
 }

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npx ts-node ./src/scripts/sitemap.mjs && next dev",
+    "build": "npx ts-node ./src/scripts/sitemap.mjs && next build",
     "start": "npx serve@latest out",
     "lint": "next lint",
     "preview": "serve out/ -p 3000"
