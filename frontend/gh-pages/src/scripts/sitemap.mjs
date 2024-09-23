@@ -96,7 +96,7 @@ async function generateSitemap() {
 
   const urls = [
     {
-      url: host,
+      url: url,
       lastModified: new Date(),
     },
     {
@@ -121,12 +121,12 @@ async function generateSitemap() {
                   <loc>${url.url}</loc>
                   ${
                     url.lastModified
-                      ? `<lastmod>${url.lastModified}</lastmod>`
+                      ? `<lastmod>${url.lastModified.toISOString()}</lastmod>`
                       : ""
                   }
                 </url>
               `;
-            })}
+            }).join("")}
             </urlset>
           `;
 
