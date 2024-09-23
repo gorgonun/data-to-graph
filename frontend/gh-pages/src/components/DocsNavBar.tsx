@@ -16,7 +16,7 @@ export default function DocsNavBar({ pages, currentPageId }: DocsNavBarProps) {
         >
           <Button variant="text">
             <Typography
-              fontSize="0.7em"
+              fontSize="1em"
               color={id === currentPageId ? "primary" : "black"}
               fontWeight={700}
             >

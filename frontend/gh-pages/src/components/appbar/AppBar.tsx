@@ -73,6 +73,7 @@ export function D2GAppBar() {
                       }}
                       sx={{ color: "white" }}
                       target={target}
+                      component={Link}
                     >
                       {t(`pages.${label}.title`)}
                     </Button>

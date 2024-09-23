@@ -108,7 +108,7 @@ export default function DocumentationTOC({
                   style={{ textDecoration: "none" }}
                 >
                   <Typography
-                    fontSize="0.7em"
+                    fontSize="1em"
                     color="black"
                     fontWeight={fontStyle.fontWeight}
                     style={{ color: fontStyle.color ?? "black" }}
